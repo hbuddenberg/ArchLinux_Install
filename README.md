@@ -4,6 +4,7 @@ Este proyecto es una colección de scripts en shell que facilitan la instalació
 
 ## Estructura del Proyecto
 
+```sh
 ArchLinux_install
 ├── src/                                        # Directorio principal de scripts
 |   ├── main.sh                                 # Script principal que ejecuta el menú y selecciona el módulo a ejecutar
@@ -40,6 +41,7 @@ ArchLinux_install
 ├── README.md                                   # Archivo README con información sobre el proyecto
 ├── LICENSE.md                                  # Archivo de licencia del proyecto
 └── .gitignore                                  # Archivo para ignorar archivos y carpetas específicas en Git
+```
 
 ## Funcionalidades
 
