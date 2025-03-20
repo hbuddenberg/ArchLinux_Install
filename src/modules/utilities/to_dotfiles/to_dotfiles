@@ -22,8 +22,8 @@ Opciones:
 mover_y_enlazar() {
     local archivo_origen="$1"
     local nombre_archivo=$(basename "$archivo_origen")
-    local carpeta_origen=$(dirname "$archivo_origen")
-    local carpeta_dotfiles="$HOME/.dotfiles/$carpeta_origen"
+    local ruta_relativa=$(realpath --relative-to="$HOME" "$archivo_origen")
+    local carpeta_dotfiles="$HOME/.dotfiles/$(dirname "$ruta_relativa")"
 
     # Crear la carpeta ~/.dotfiles si no existe
     mkdir -p "$carpeta_dotfiles"
