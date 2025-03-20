@@ -10,7 +10,7 @@ instalar_gum() {
 
 # Función para mostrar la ayuda
 mostrar_ayuda() {
-    gum style --border normal --margin "1" --padding "1" --border-foreground 212 "Uso: $0 [ruta_del_archivo]
+    gum style --border normal --margin "1" --padding "1" --border-foreground "#005f87" --foreground "#87d7ff" "Uso: $0 [ruta_del_archivo]
 
 Este script mueve un archivo a la carpeta ~/.dotfiles y crea un enlace simbólico en la ubicación original.
 
@@ -38,7 +38,7 @@ mover_y_enlazar() {
     chmod 755 "$carpeta_dotfiles"
     chmod 644 "$carpeta_dotfiles/$nombre_archivo"
 
-    gum style --foreground 10 "Archivo movido y enlace simbólico creado exitosamente."
+    gum style --foreground "#87d7ff" "Archivo movido y enlace simbólico creado exitosamente."
 }
 
 # Verifica si se proporcionaron los argumentos necesarios o si se solicitó ayuda
@@ -51,7 +51,7 @@ fi
 instalar_gum
 
 if [ "$#" -ne 1 ]; then
-    archivo_origen=$(gum input --placeholder "Ingrese la ruta del archivo")
+    archivo_origen=$(gum input --placeholder "Ingrese la ruta del archivo" --prompt.foreground "#005f87" --foreground "#87d7ff")
 else
     archivo_origen="$1"
 fi
