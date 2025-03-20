@@ -42,17 +42,18 @@ mover_y_enlazar() {
 }
 
 # Verifica si se proporcionaron los argumentos necesarios o si se solicitó ayuda
-if [ "$#" -ne 1 ]; then
-    if [ "$1" == "--help" ]; then
-        mostrar_ayuda
-        exit 0
-    else
-        archivo_origen=$(gum input --placeholder "Ingrese la ruta del archivo")
-    fi
-else
-    archivo_origen="$1"
+if [ "$#" -eq 1 ] && [ "$1" == "--help" ]; then
+    mostrar_ayuda
+    exit 0
 fi
 
 # Ejecutar funciones
 instalar_gum
+
+if [ "$#" -ne 1 ]; then
+    archivo_origen=$(gum input --placeholder "Ingrese la ruta del archivo")
+else
+    archivo_origen="$1"
+fi
+
 mover_y_enlazar "$archivo_origen"
