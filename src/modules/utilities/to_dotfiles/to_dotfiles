@@ -22,10 +22,17 @@ Opciones:
 mover_y_enlazar() {
     local archivo_origen="$1"
     local nombre_archivo=$(basename "$archivo_origen")
-    local ruta_relativa=$(realpath --relative-to="$HOME" "$archivo_origen")
-    local carpeta_dotfiles="$HOME/.dotfiles/$(dirname "$ruta_relativa")"
+    local directorio_origen=$(dirname "$archivo_origen")
+    local nombre_directorio_origen=$(basename "$directorio_origen")
+    local carpeta_dotfiles="$HOME/.dotfiles/$nombre_directorio_origen"
 
-    # Crear la carpeta ~/.dotfiles si no existe
+    echo "Archivo origen: $archivo_origen"
+    echo "Nombre archivo: $nombre_archivo"
+    echo "Directorio origen: $directorio_origen"
+    echo "Nombre directorio origen: $nombre_directorio_origen"
+    echo "Carpeta dotfiles: $carpeta_dotfiles"
+
+    # Crear la carpeta ~/.dotfiles/<nombre_directorio_origen> si no existe
     mkdir -p "$carpeta_dotfiles"
 
     # Mover el archivo a la nueva ubicación
@@ -38,7 +45,8 @@ mover_y_enlazar() {
     chmod 755 "$carpeta_dotfiles"
     chmod 644 "$carpeta_dotfiles/$nombre_archivo"
 
-    gum style --foreground "#87d7ff" "Archivo movido y enlace simbólico creado exitosamente."
+    gum style --foreground "#87d7ff" "Archivo movido de $archivo_origen a $carpeta_dotfiles/$nombre_archivo y enlace simbólico creado en $archivo_origen."
+    gum style --foreground "87d7ff" "Fin de la ejecución: Archivo movido y enlace simbólico creado."
 }
 
 # Verifica si se proporcionaron los argumentos necesarios o si se solicitó ayuda
