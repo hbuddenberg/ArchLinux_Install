@@ -1,7 +1,8 @@
 #!/bin/bash
 
 # Preguntar si se desea instalar to_dotfiles.sh en los ejecutables locales
-read -p "¿Deseas instalar to_dotfiles en los ejecutables locales? (s/n): " instalar
+read -p "¿Deseas instalar to_dotfiles en los ejecutables locales? (s/n) [s]: " instalar
+instalar=${instalar:-s}
 
 if [[ "$instalar" == "s" || "$instalar" == "S" ]]; then
     # Definir la ruta de origen y destino
