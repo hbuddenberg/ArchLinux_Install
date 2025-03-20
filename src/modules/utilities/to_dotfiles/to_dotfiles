@@ -29,10 +29,10 @@ mover_y_enlazar() {
     mkdir -p "$carpeta_dotfiles"
 
     # Mover el archivo a la nueva ubicación
-    mv "$archivo_origen" "$carpeta_dotfiles"
+    mv "$archivo_origen" "$carpeta_dotfiles/$nombre_archivo"
 
     # Crear un enlace simbólico desde la nueva ubicación a la carpeta de origen
-    ln -s "$carpeta_dotfiles/$nombre_archivo" "$carpeta_origen/$nombre_archivo"
+    ln -s "$carpeta_dotfiles/$nombre_archivo" "$archivo_origen"
 
     # Asignar permisos necesarios
     chmod 755 "$carpeta_dotfiles"
