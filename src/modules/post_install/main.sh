@@ -17,7 +17,7 @@ function configure_system() {
     arch-chroot /mnt /bin/bash -c "
 pacman --noconfirm -Sy git
 cd /tmp
-git clone https://github.com/HansBuddenbergBlamey/ArchHypr_Install.git
+git clone -b develop https://github.com/HansBuddenbergBlamey/ArchLinux_install.git
 git reset --hard HEAD
 git pull origin main
 chmod +x ArchHypr_Install/src/modules/post_install/chroot_commands.sh
