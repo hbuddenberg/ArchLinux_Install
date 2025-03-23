@@ -19,7 +19,7 @@ pacman --noconfirm -Sy git
 cd /tmp
 git clone -b develop https://github.com/HansBuddenbergBlamey/ArchLinux_install.git
 git reset --hard HEAD
-git pull origin main
+git pull origin develop
 chmod +x ArchHypr_Install/src/modules/post_install/chroot_commands.sh
 sh ArchHypr_Install/src/modules/post_install/chroot_commands.sh
 "
