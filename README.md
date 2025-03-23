@@ -1,4 +1,4 @@
-# ArchHypr Install
+# ArchLinux Install
 
 Este proyecto es una colección de scripts en shell que facilitan la instalación y configuración de Arch Linux, así como la gestión de complementos y utilidades. La estructura del proyecto está organizada en diferentes módulos, cada uno con su propio conjunto de scripts y traducciones.
 
@@ -55,9 +55,10 @@ ArchLinux_install
 Para clonar el repositorio y ejecutar el script principal, siga estos pasos:
 
 ```sh
+sudo pacman -Sy git
 git clone https://github.com/HansBuddenbergBlamey/ArchLinux_install.git
 cd ArchLinux_install/src
-sudo main.sh
+sudo sh main.sh
 ```
 
 ## Licencia
