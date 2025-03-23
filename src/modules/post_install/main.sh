@@ -18,10 +18,11 @@ function configure_system() {
 pacman --noconfirm -Sy git
 cd /tmp
 git clone -b develop https://github.com/HansBuddenbergBlamey/ArchLinux_install.git
+cd /tmp/ArchLinux_Install
 git reset --hard HEAD
 git pull origin develop
-chmod +x ArchHypr_Install/src/modules/post_install/chroot_commands.sh
-sh ArchHypr_Install/src/modules/post_install/chroot_commands.sh
+chmod +x /tmp/ArchLinux_Install/src/modules/post_install/chroot_commands.sh
+sh /tmp/ArchLinux_Install/src/modules/post_install/chroot_commands.sh
 "
 
     echo "---------------------------------------------------"
