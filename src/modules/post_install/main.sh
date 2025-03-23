@@ -17,11 +17,12 @@ function configure_system() {
     arch-chroot /mnt /bin/bash -c "
 pacman --noconfirm -Sy git
 cd /tmp
-git clone https://github.com/HansBuddenbergBlamey/ArchHypr_Install.git
+git clone -b develop https://github.com/HansBuddenbergBlamey/ArchLinux_install.git
+cd /tmp/ArchLinux_Install
 git reset --hard HEAD
-git pull origin main
-chmod +x ArchHypr_Install/src/modules/post_install/chroot_commands.sh
-sh ArchHypr_Install/src/modules/post_install/chroot_commands.sh
+git pull origin develop
+chmod +x /tmp/ArchLinux_Install/src/modules/post_install/chroot_commands.sh
+sh /tmp/ArchLinux_Install/src/modules/post_install/chroot_commands.sh
 "
 
     echo "---------------------------------------------------"

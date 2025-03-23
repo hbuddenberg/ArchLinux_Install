@@ -1,0 +1,67 @@
+#!/bin/bash
+
+# Función para verificar e instalar GUM si no está presente
+instalar_gum() {
+    if ! command -v gum &> /dev/null; then
+        echo "GUM no está instalado. Instalándolo ahora..."
+        sudo pacman -S gum
+    fi
+}
+
+# Función para mostrar la ayuda
+mostrar_ayuda() {
+    gum style --border normal --margin "1" --padding "1" --border-foreground "#005f87" --foreground "#87d7ff" "Uso: $0 [ruta_del_archivo]
+
+Este script mueve un archivo a la carpeta ~/.dotfiles y crea un enlace simbólico en la ubicación original.
+
+Opciones:
+  --help    Muestra esta ayuda y sale"
+}
+
+# Función para mover el archivo y crear el enlace simbólico
+mover_y_enlazar() {
+    local archivo_origen="$1"
+    local nombre_archivo=$(basename "$archivo_origen")
+    local directorio_origen=$(dirname "$archivo_origen")
+    local nombre_directorio_origen=$(basename "$directorio_origen")
+    local carpeta_dotfiles="$HOME/.dotfiles/$nombre_directorio_origen"
+
+    echo "Archivo origen: $archivo_origen"
+    echo "Nombre archivo: $nombre_archivo"
+    echo "Directorio origen: $directorio_origen"
+    echo "Nombre directorio origen: $nombre_directorio_origen"
+    echo "Carpeta dotfiles: $carpeta_dotfiles"
+
+    # Crear la carpeta ~/.dotfiles/<nombre_directorio_origen> si no existe
+    mkdir -p "$carpeta_dotfiles"
+
+    # Mover el archivo a la nueva ubicación
+    mv "$archivo_origen" "$carpeta_dotfiles/$nombre_archivo"
+
+    # Crear un enlace simbólico desde la nueva ubicación a la carpeta de origen
+    ln -s "$carpeta_dotfiles/$nombre_archivo" "$archivo_origen"
+
+    # Asignar permisos necesarios
+    chmod 755 "$carpeta_dotfiles"
+    chmod 644 "$carpeta_dotfiles/$nombre_archivo"
+
+    gum style --foreground "#87d7ff" "Archivo movido de $archivo_origen a $carpeta_dotfiles/$nombre_archivo y enlace simbólico creado en $archivo_origen."
+    gum style --foreground "87d7ff" "Fin de la ejecución: Archivo movido y enlace simbólico creado."
+}
+
+# Verifica si se proporcionaron los argumentos necesarios o si se solicitó ayuda
+if [ "$#" -eq 1 ] && [ "$1" == "--help" ]; then
+    mostrar_ayuda
+    exit 0
+fi
+
+# Ejecutar funciones
+instalar_gum
+
+if [ "$#" -ne 1 ]; then
+    archivo_origen=$(gum input --placeholder "Ingrese la ruta del archivo" --prompt.foreground "#005f87" --foreground "#87d7ff")
+else
+    archivo_origen="$1"
+fi
+
+mover_y_enlazar "$archivo_origen"

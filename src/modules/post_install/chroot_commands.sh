@@ -87,7 +87,7 @@ function create_wifi_script() {
         echo
 
         echo "Configurando conexión de red..."
-        cat <<EOF > /usr/local/bin/wifi_config.sh
+        cat <<EOF > /usr/local/bin/wifi_config
 #!/bin/bash
 
 wifi_ssid="$wifi_ssid"
@@ -114,8 +114,8 @@ systemctl restart systemd-networkd
 echo "Conexión WiFi configurada."
 EOF
 
-        chmod +x /usr/local/bin/configurar_wifi.sh
-        /usr/local/bin/configurar_wifi.sh
+        chmod +x /usr/local/bin/wifi_config
+        /usr/local/bin/wifi_config
         echo "---------------------------------------------------"
     fi
 }
@@ -315,10 +315,10 @@ function install_timeshift() {
 # Función para ejecutar scripts adicionales
 function run_additional_scripts() {
     echo "Ejecutando scripts adicionales..."
-    chmod +x /tmp/ArchHypr_Install/src/modules/date_time_zone/main.sh
-    chmod +x /tmp/ArchHypr_Install/src/modules/pacman_update/main.sh
-    sudo -u $username /tmp/ArchHypr_Install/src/modules/date_time_zone/main.sh
-    sudo -u $username /tmp/ArchHypr_Install/src/modules/pacman_update/main.sh
+    chmod +x /tmp/ArchLinux_Install/src/modules/date_time_zone/main.sh
+    chmod +x /tmp/ArchLinux_Install/src/modules/pacman_update/main.sh
+    sudo -u $username /tmp/ArchLinux_Install/src/modules/date_time_zone/main.sh
+    sudo -u $username /tmp/ArchLinux_Install/src/modules/pacman_update/main.sh
     echo "---------------------------------------------------"
 }
 
