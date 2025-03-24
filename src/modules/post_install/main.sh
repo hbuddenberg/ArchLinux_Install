@@ -18,7 +18,7 @@ read -p "Presiona Enter para continuar..."
 function configure_system() {
 
     # Ejecutar los comandos directamente dentro del entorno chroot
-    $SCRIPT_DIR = "/tmp/ArchLinux_Install"
+    SCRIPT_DIR="/tmp/ArchLinux_Install"
     arch-chroot /mnt /bin/bash -c "
 pacman --noconfirm -Sy git
 cd /tmp
