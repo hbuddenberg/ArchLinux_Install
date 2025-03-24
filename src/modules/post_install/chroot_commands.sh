@@ -8,8 +8,11 @@ fi
 
 ################################################################
 
-# Obtener la ruta del directorio del script actual
-SCRIPT_DIR=$(dirname "${BASH_SOURCE[0]}")
+# Obtener la ruta del directorio del script actual de forma dinámica
+if [ -z "$SCRIPT_DIR" ]; then
+    SCRIPT_DIR=$(dirname "$(realpath "$BASH_SOURCE")")
+fi
+echo "directorio actual: $SCRIPT_DIR"
 
 # Función para preguntar el nombre del hostname
 function set_hostname() {

@@ -7,13 +7,18 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 # Obtener la ruta del directorio del script actual de forma dinámica
-SCRIPT_DIR=$(dirname "$(realpath "$BASH_SOURCE")")
+if [ -z "$SCRIPT_DIR" ]; then
+    SCRIPT_DIR=$(dirname "$(realpath "$BASH_SOURCE")")
+fi
+$SCRIPT_DIR_ORIGINAL = $SCRIPT_DIR
 echo "directorio actual: $SCRIPT_DIR"
+read -p "Presiona Enter para continuar..."
 
 # Función para configurar el sistema dentro del chroot
 function configure_system() {
 
     # Ejecutar los comandos directamente dentro del entorno chroot
+    $SCRIPT_DIR = /tmp/ArchLinux_Install
     arch-chroot /mnt /bin/bash -c "
 pacman --noconfirm -Sy git
 cd /tmp
