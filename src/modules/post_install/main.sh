@@ -12,7 +12,6 @@ if [ -z "$SCRIPT_DIR" ]; then
 fi
 SCRIPT_DIR_ORIGINAL=$SCRIPT_DIR
 echo "directorio actual: $SCRIPT_DIR"
-read -p "Presiona Enter para continuar..."
 
 # Función para configurar el sistema dentro del chroot
 function configure_system() {
@@ -22,14 +21,11 @@ function configure_system() {
     arch-chroot /mnt /bin/bash -c "
 clear
 pacman --noconfirm -Sy git
-read -p 'Presiona Enter para continuar...'
 cd /tmp
-git clone https://github.com/HansBuddenbergBlamey/ArchLinux_install.git
-read -p 'Presiona Enter para continuar...'
+git clone https://github.com/HansBuddenbergBlamey/ArchLinux_Install.git
 cd /tmp/ArchLinux_Install
 git reset --hard HEAD
 git pull origin main
-read -p 'Presiona Enter para continuar...'
 chmod +x /tmp/ArchLinux_Install/src/modules/post_install/chroot_commands.sh
 sh /tmp/ArchLinux_Install/src/modules/post_install/chroot_commands.sh
 "
