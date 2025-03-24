@@ -21,13 +21,15 @@ function configure_system() {
     SCRIPT_DIR="/tmp/ArchLinux_Install"
     arch-chroot /mnt /bin/bash -c "
 clear
-echo "Directorio: \$pwd"
 pacman --noconfirm -Sy git
+read -p 'Presiona Enter para continuar...'
 cd /tmp
 git clone https://github.com/HansBuddenbergBlamey/ArchLinux_install.git
+read -p 'Presiona Enter para continuar...'
 cd /tmp/ArchLinux_Install
 git reset --hard HEAD
 git pull origin main
+read -p 'Presiona Enter para continuar...'
 chmod +x /tmp/ArchLinux_Install/src/modules/post_install/chroot_commands.sh
 sh /tmp/ArchLinux_Install/src/modules/post_install/chroot_commands.sh
 "
