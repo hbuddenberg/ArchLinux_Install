@@ -2,10 +2,11 @@
 clear
 
 # Colores Gameboy
-DARK_GREEN="#0f380f"
-GREEN="#306230"
-LIGHT_GREEN="#8bac0f"
-LIGHTEST_GREEN="#9bbc0f"
+DARK_GREEN="\e[38;2;15;56;15m"
+GREEN="\e[38;2;48;98;48m"
+LIGHT_GREEN="\e[38;2;139;172;15m"
+LIGHTEST_GREEN="\e[38;2;155;188;15m"
+RESET="\e[0m"
 
 # Logo de Arch Linux
 ARCH_LOGO="
