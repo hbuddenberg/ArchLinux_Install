@@ -32,13 +32,13 @@ function show_menu {
         "0) Salir")
     
     case $opcion in
-        "1) Nueva Instalación")
+        "- Nueva Instalación")
             bash "$SCRIPT_DIR/new_install/main.sh"
             ;;
-        "2) Utilidades")
+        "- Utilidades")
             bash "$SCRIPT_DIR/utilities/main.sh"
             ;;
-        "0) Salir")
+        "- Salir")
             echo "Saliendo..."
             exit 0
             ;;
