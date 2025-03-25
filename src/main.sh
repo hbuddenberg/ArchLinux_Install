@@ -9,7 +9,6 @@ HEX_LIGHTEST_GREEN="#9bbc0f"
 
 # Logo de Arch Linux
 ARCH_LOGO="
-\e[H\e[2J
            \e[38;2;15;56;15m.
           \e[38;2;15;56;15m/#\\
          \e[38;2;15;56;15m/###\\      \e[38;2;155;188;15m               #     \e[38;2;15;56;15m| *
@@ -24,7 +23,6 @@ ARCH_LOGO="
 function show_menu {
     clear
     gum style --border normal --margin "1" --padding "1" --border-foreground "$HEX_DARK_GREEN" --foreground "$HEX_LIGHTEST_GREEN" "$(echo -e "$ARCH_LOGO")"
-    gum style --border normal --margin "1" --padding "1" --border-foreground "$HEX_DARK_GREEN" --foreground "$HEX_LIGHTEST_GREEN" "ArchHypr Install - Menú Principal"
     opcion=$(gum choose --cursor.foreground="$HEX_GREEN" --selected.foreground="$HEX_LIGHT_GREEN" \
         "1) Nueva Instalación" \
         "2) Utilidades" \
