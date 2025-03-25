@@ -6,8 +6,6 @@ if ! command -v gum &> /dev/null; then
     echo "gum no está instalado. Instalando gum..."
     if command -v pacman &> /dev/null; then
         sudo pacman -S gum
-    elif command -v apt-get &> /dev/null; then
-        sudo apt-get install gum
     else
         echo "No se pudo instalar gum. Por favor, instálalo manualmente."
         exit 1
@@ -50,7 +48,7 @@ ${ARCH_BLUE} ▟▛▀                               ▀▜▙   ${ARCH_RESET}
 # Función para mostrar el menú principal
 function show_menu {
     clear
-    gum style --border bold --margin "1" --padding "1" --border-foreground "$ARCH_BLUE" --foreground "$ARCH_WHITE" "echo -e \"$ARCH_LOGO\""
+    gum style --border bold --margin "1" --padding "1" --border-foreground "$ARCH_BLUE" --foreground "$ARCH_WHITE" "$ARCH_LOGO"
     opcion=$(gum choose --cursor.foreground="$ARCH_BLUE" --selected.foreground="$ARCH_WHITE" \
         "1) Nueva Instalación" \
         "2) Utilidades" \
