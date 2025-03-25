@@ -7,22 +7,29 @@ HEX_GREEN="#306230"
 HEX_LIGHT_GREEN="#8bac0f"
 HEX_LIGHTEST_GREEN="#9bbc0f"
 
+# Colores Arch Linux
+ARCH_BLUE="\e[38;2;23;147;209m"
+ARCH_WHITE="\e[1;37m"
+ARCH_RESET="\e[0m"
+
 # Logo de Arch Linux
-ARCH_LOGO="           \e[38;2;15;56;15m.
-          \e[38;2;15;56;15m/#\\
-         \e[38;2;15;56;15m/###\\      \e[38;2;155;188;15m               #     \e[38;2;15;56;15m| *
-        \e[38;2;15;56;15m/p^###\\     \e[38;2;155;188;15m a##e #%\" a#\"e 6##%  \e[38;2;15;56;15m| | |-^-. |   | \\ /
-       \e[38;2;15;56;15m/##P^q##\\    \e[38;2;155;188;15m.oOo# #   #    #  #  \e[38;2;15;56;15m| | |   | |   |  X
-      \e[38;2;15;56;15m/##(   )##\\   \e[38;2;155;188;15m%OoO# #   %#e\" #  #  \e[38;2;15;56;15m| | |   | ^._.| / \\ \e[38;2;139;172;15m TM
-     \e[38;2;15;56;15m/###P   q#,^\\
-    \e[38;2;15;56;15m/P^         ^q\\ \e[38;2;139;172;15m TM
+ARCH_LOGO="
+${ARCH_BLUE}           .
+          /#\\
+         /###\\      ${ARCH_WHITE}               #     ${ARCH_BLUE}| *
+        /p^###\\     ${ARCH_WHITE} a##e #%" a#"e 6##%  ${ARCH_BLUE}| | |-^-. |   | \\ /
+       /##P^q##\\    ${ARCH_WHITE}.oOo# #   #    #  #  ${ARCH_BLUE}| | |   | |   |  X
+      /##(   )##\\   ${ARCH_WHITE}%OoO# #   %#e" #  #  ${ARCH_BLUE}| | |   | ^._.| / \\ ${ARCH_WHITE}TM
+     /###P   q#,^\\
+    /P^         ^q\\ ${ARCH_WHITE}TM
+${ARCH_RESET}
 "
 
 # Función para mostrar el menú principal
 function show_menu {
     clear
-    gum style --border normal --margin "1" --padding "1" --border-foreground "$HEX_DARK_GREEN" --foreground "$HEX_LIGHTEST_GREEN" "$(echo -e "$ARCH_LOGO")"
-    opcion=$(gum choose --cursor.foreground="$HEX_GREEN" --selected.foreground="$HEX_LIGHT_GREEN" \
+    gum style --border bold --margin "1" --padding "1" --border-foreground "$ARCH_BLUE" --foreground "$ARCH_WHITE" "$ARCH_LOGO"
+    opcion=$(gum choose --cursor.foreground="$ARCH_BLUE" --selected.foreground="$ARCH_WHITE" \
         "1) Nueva Instalación" \
         "2) Utilidades" \
         "0) Salir")
