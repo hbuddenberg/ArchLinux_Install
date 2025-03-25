@@ -1,6 +1,19 @@
 #!/bin/bash
 clear
 
+# Verificar si gum está instalado
+if ! command -v gum &> /dev/null; then
+    echo "gum no está instalado. Instalando gum..."
+    if command -v pacman &> /dev/null; then
+        sudo pacman -S gum
+    elif command -v apt-get &> /dev/null; then
+        sudo apt-get install gum
+    else
+        echo "No se pudo instalar gum. Por favor, instálalo manualmente."
+        exit 1
+    fi
+fi
+
 # Colores Gameboy
 HEX_DARK_GREEN="#0f380f"
 HEX_GREEN="#306230"
