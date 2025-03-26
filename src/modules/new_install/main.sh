@@ -47,7 +47,7 @@ ARCH_LOGO+="${ARCH_BLUE}       ▟████████▛      ▜███�
 ARCH_LOGO+="${ARCH_BLUE}      ▟█████████        ████████▙\n"
 ARCH_LOGO+="${ARCH_BLUE}     ▟██████████        █████▆▅▄▃▂\n"
 ARCH_LOGO+="${ARCH_BLUE}    ▟██████████▛        ▜█████████▙                    ${ARCH_WHITE}Menú ${ARCH_CYAN}Instalación${ARCH_WHITE}:\n"
-ARCH_LOGO+="${ARCH_BLUE}   ▟██████▀▀▀              ▀▀██████▙                   ===============\n"
+ARCH_LOGO+="${ARCH_BLUE}   ▟██████▀▀▀              ▀▀██████▙                   =================\n"
 ARCH_LOGO+="${ARCH_BLUE}  ▟███▀▘                       ▝▀███▙\n"
 ARCH_LOGO+="${ARCH_BLUE} ▟▛▀                               ▀▜▙\n"
 ARCH_LOGO+="${ARCH_RESET}"
