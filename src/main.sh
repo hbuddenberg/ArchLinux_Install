@@ -1,5 +1,4 @@
 #!/bin/bash
-clear
 
 # Verificar si gum está instalado
 if ! command -v gum &> /dev/null; then
@@ -19,49 +18,55 @@ HEX_LIGHT_GREEN="#8bac0f"
 HEX_LIGHTEST_GREEN="#9bbc0f"
 
 # Colores Arch Linux
-ARCH_BLUE="\e[38;2;23;147;209m"
-ARCH_WHITE="\e[1;37m"
-ARCH_RESET="\e[0m"
+HEX_ARCH_BLUE="#1793D1"
+HEX_ARCH_CYAN="#00FFFF"
+HEX_ARCH_WHITE="#FFFFFF"
+
+ARCH_BLUE="\033[38;2;23;147;209m"
+ARCH_CYAN="\033[1;36m"
+ARCH_WHITE="\033[1;37m"
+ARCH_RESET="\033[0m"
 
 # Logo de Arch Linux
-ARCH_LOGO="${ARCH_BLUE}                   ▄
-${ARCH_BLUE}                  ▟█▙
-${ARCH_BLUE}                 ▟███▙
-${ARCH_BLUE}                ▟█████▙
-${ARCH_BLUE}               ▟███████▙
-${ARCH_BLUE}              ▂▔▀▜██████▙
-${ARCH_BLUE}             ▟██▅▂▝▜█████▙               
-${ARCH_BLUE}            ▟█████████████▙              
-${ARCH_BLUE}           ▟███████████████▙             
-${ARCH_BLUE}          ▟█████████████████▙            ${ARCH_WHITE}               #     ${ARCH_BLUE}| *
-${ARCH_BLUE}         ▟███████████████████▙           ${ARCH_WHITE} a##e #%" a#"e 6##%  ${ARCH_BLUE}| | |-^-. |   | \\ /
-${ARCH_BLUE}        ▟█████████▛▀▀▜████████▙          ${ARCH_WHITE}.oOo# #   #    #  #  ${ARCH_BLUE}| | |   | |   |  X
-${ARCH_BLUE}       ▟████████▛      ▜███████▙         ${ARCH_WHITE}%OoO# #   %#e" #  #  ${ARCH_BLUE}| | |   | ^._.| / \\
-${ARCH_BLUE}      ▟█████████        ████████▙        
-${ARCH_BLUE}     ▟██████████        █████▆▅▄▃▂       
-${ARCH_BLUE}    ▟██████████▛        ▜█████████▙      
-${ARCH_BLUE}   ▟██████▀▀▀              ▀▀██████▙     
-${ARCH_BLUE}  ▟███▀▘                       ▝▀███▙    
-${ARCH_BLUE} ▟▛▀                               ▀▜▙   ${ARCH_RESET}
-"
+ARCH_LOGO="${ARCH_BLUE}                   ▄\n"
+ARCH_LOGO+="${ARCH_BLUE}                  ▟█▙\n"
+ARCH_LOGO+="${ARCH_BLUE}                 ▟███▙\n"
+ARCH_LOGO+="${ARCH_BLUE}                ▟█████▙\n"
+ARCH_LOGO+="${ARCH_BLUE}               ▟███████▙\n"
+ARCH_LOGO+="${ARCH_BLUE}              ▂▔▀▜██████▙\n"
+ARCH_LOGO+="${ARCH_BLUE}             ▟██▅▂▝▜█████▙\n"
+ARCH_LOGO+="${ARCH_BLUE}            ▟█████████████▙             ${ARCH_WHITE}               #     ${ARCH_CYAN}| *\n"
+ARCH_LOGO+="${ARCH_BLUE}           ▟███████████████▙            ${ARCH_WHITE} a##e #%\" a#\"e 6##%  ${ARCH_CYAN}| | |-^-. |   | \\ /\n"
+ARCH_LOGO+="${ARCH_BLUE}          ▟█████████████████▙           ${ARCH_WHITE}.oOo# #   #    #  #  ${ARCH_CYAN}| | |   | |   |  X\n"
+ARCH_LOGO+="${ARCH_BLUE}         ▟███████████████████▙          ${ARCH_WHITE}%OoO# #   %#e\" #  #  ${ARCH_CYAN}| | |   | ^._.| / \\ ${ARCH_WHITE}TM \n"
+ARCH_LOGO+="${ARCH_BLUE}        ▟█████████▛▀▀▜████████▙\n"
+ARCH_LOGO+="${ARCH_BLUE}       ▟████████▛      ▜███████▙\n"
+ARCH_LOGO+="${ARCH_BLUE}      ▟█████████        ████████▙\n"
+ARCH_LOGO+="${ARCH_BLUE}     ▟██████████        █████▆▅▄▃▂\n"
+ARCH_LOGO+="${ARCH_BLUE}    ▟██████████▛        ▜█████████▙                    ${ARCH_WHITE}Menú ${ARCH_CYAN}Principal${ARCH_WHITE}:\n"
+ARCH_LOGO+="${ARCH_BLUE}   ▟██████▀▀▀              ▀▀██████▙                   ===============\n"
+ARCH_LOGO+="${ARCH_BLUE}  ▟███▀▘                       ▝▀███▙\n"
+ARCH_LOGO+="${ARCH_BLUE} ▟▛▀                               ▀▜▙\n"
+ARCH_LOGO+="${ARCH_RESET}"
+
 
 # Función para mostrar el menú principal
 function show_menu {
     clear
-    gum style --border bold --margin "1" --padding "1" --border-foreground "$ARCH_BLUE" --foreground "$ARCH_WHITE" "$ARCH_LOGO"
-    opcion=$(gum choose --cursor.foreground="$ARCH_BLUE" --selected.foreground="$ARCH_WHITE" \
-        "1) Nueva Instalación" \
-        "2) Utilidades" \
-        "0) Salir")
+    echo -e "$ARCH_LOGO" | gum style --no-strip-ansi --border thick --margin "1" --padding "1" --border-foreground "$HEX_ARCH_CYAN" --foreground "$HEX_ARCH_WHITE" --bold
+    opcion=$(gum choose --cursor.foreground="$HEX_ARCH_CYAN" --cursor.bold --selected.foreground="$HEX_ARCH_WHITE" --selected.bold --header="Seleccione:" --header.foreground="$HEX_ARCH_BLUE" --header.bold \
+        "● Nueva Instalación" \
+        "● Utilidades" \
+        "○ Salir")
     
     case $opcion in
-        "1) Nueva Instalación")
-            bash "$SCRIPT_DIR/new_install/main.sh"
+        "● Nueva Instalación")
+            sh "$SCRIPT_DIR/modules/new_install/main.sh"
             ;;
-        "2) Utilidades")
-            bash "$SCRIPT_DIR/utilities/main.sh"
+        "● Utilidades")
+            sh "$SCRIPT_DIR/modules/utilities/main.sh"
             ;;
-        "0) Salir")
+        "○ Salir")
             echo "Saliendo..."
             exit 0
             ;;
