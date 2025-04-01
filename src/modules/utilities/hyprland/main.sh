@@ -97,7 +97,6 @@ install_waybar() {
             sed -i '/# exec-once = waybar &/{n;d}' "$config_path"
             sed -i '/# exec-once = waybar &/a exec-once = waybar &' "$config_path"
         fi
-        systemctl restart display-manager
     else
         echo "Instalación de Waybar cancelada."
     fi
@@ -159,6 +158,10 @@ if gum confirm "¿Deseas instalar Hyprland, SDDM y Kitty?" --affirmative "Sí" -
 
     # Preguntar si se desea instalar Rofi
     install_rofi
+
+    if gum confirm "¿Desea reiniciar Display Manager?" --affirmative "Sí" --negative "No"; then
+        systemctl restart display-manager
+    fi
 fi
 
 
