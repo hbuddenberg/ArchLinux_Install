@@ -52,8 +52,14 @@ clear
 gum style --foreground 33 "Detectando discos disponibles..."
 DISKS=$(lsblk -d -n -o NAME,SIZE | awk '{print $1 " (" $2 ")"}')
 
+# Validar que se encontraron discos
+if [[ -z "$DISKS" ]]; then
+    gum style --foreground 196 "Error: No se encontraron discos disponibles."
+    exit 1
+fi
+
 # Usar gum para seleccionar el disco
-DISK_NAME=$(echo "$DISKS" | gum choose --placeholder "Seleccione un disco (por defecto: sda)")
+DISK_NAME=$(echo "$DISKS" | gum choose --placeholder "Seleccione un disco")
 DISK_NAME=${DISK_NAME%% *} # Extraer solo el nombre del disco (ejemplo: sda)
 DISK_NAME=${DISK_NAME:-sda} # Si no se selecciona nada, usar sda por defecto
 DISK="/dev/$DISK_NAME"
