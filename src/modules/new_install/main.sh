@@ -84,7 +84,8 @@ function show_menu {
     echo -e "$ARCH_LOGO" | gum style --no-strip-ansi --border thick --margin "1" --padding "1" --border-foreground "$HEX_ARCH_CYAN" --foreground "$HEX_ARCH_WHITE" --bold
     opcion=$(gum choose --cursor.foreground="$HEX_ARCH_CYAN" --cursor.bold --selected.foreground="$HEX_ARCH_WHITE" --selected.bold --header="Seleccione:" --header.foreground="$HEX_ARCH_BLUE" --header.bold \
         "● Ejecucion de corrido" \
-        "● Actualizar Pacman" \
+        "● Actualizar Lenguaje" \
+        "● Actualizar Repositorio Pacman" \
         "● Crear Particiones" \
         "● Instalar Arch Linux" \
         "● Instalar usando Archinstall" \
@@ -157,7 +158,10 @@ while true; do
         "● Ejecucion de corrido")
             ejecutar_todos
             ;;
-        "● Actualizar Pacman")
+        "● Actualizar Lenguaje")
+            configurar_fecha_hora
+            ;;
+        "● Actualizar Repositorio Pacman")
             pacman_update
             ;;
         "● Crear Particiones")
