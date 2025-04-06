@@ -4,7 +4,7 @@
 if ! command -v gum &> /dev/null; then
     echo "gum no está instalado. Instalando gum..."
     if command -v pacman &> /dev/null; then
-        sudo pacman -S gum
+        sudo pacman -S --noconfirm gum
     else
         echo "No se pudo instalar gum. Por favor, instálalo manualmente."
         exit 1
