@@ -124,8 +124,6 @@ function ejecutar_todos {
     pacman_update no_wait
     crear_particiones no_wait
     instalar_arch_linux no_wait
-    instalar_usando_archinstall no_wait
-    post_install_arch no_wait
     ejecutar_de_corrido=false
 }
 
