@@ -2,7 +2,7 @@
 clear
 # Verifica si el script se ejecuta como root
 if [[ $EUID -ne 0 ]]; then
-    echo "Este script debe ejecutarse como root"
+    gum style --foreground 196 "Este script debe ejecutarse como root"
     exit 1
 fi
 
@@ -19,15 +19,14 @@ fi
 # Descomentar [multilib] y su Include
 sed -i '/^#\[multilib\]/{N;s/#\(\[multilib\]\)\n#\(Include = \/etc\/pacman.d\/mirrorlist\)/\1\n\2/}' "$PACMAN_CONF"
 
-echo "Cambios aplicados a $PACMAN_CONF"
+gum style --foreground 34 "Cambios aplicados a $PACMAN_CONF"
 
 # Preguntar si se desea usar reflector
-read -p "¿Desea usar reflector para actualizar la lista de mirrors? (S/n): " USE_REFLECTOR
-USE_REFLECTOR=${USE_REFLECTOR:-s}
-if [[ "$USE_REFLECTOR" =~ ^[Ss]$ ]]; then
+USE_REFLECTOR=$(gum choose "Sí" "No")
+if [[ "$USE_REFLECTOR" == "Sí" ]]; then
     ## Reflector
     DEFAULT_COUNTRY="Chile"
-    read -p "Ingrese el país para reflector (predeterminado: Chile): " COUNTRY
+    COUNTRY=$(gum input --placeholder "Ingrese el país para reflector (predeterminado: Chile)")
     COUNTRY=${COUNTRY:-$DEFAULT_COUNTRY}
 
     # Verificar conectividad a Internet
@@ -38,7 +37,7 @@ if [[ "$USE_REFLECTOR" =~ ^[Ss]$ ]]; then
         # Si reflector responde correctamente, guardar en el archivo de mirrors
         reflector -c "$COUNTRY,Worldwide," -p https -a 10 --sort rate --save /etc/pacman.d/mirrorlist
     else
-        echo "Reflector no pudo obtener mirrors para el país especificado."
+        gum style --foreground 196 "Reflector no pudo obtener mirrors para el país especificado."
         exit 1
     fi
 fi
