@@ -1,9 +1,29 @@
 #!/bin/bash
 
+# Función para verificar si estamos en un entorno Live ISO
+function is_live_iso {
+    if grep -q "overlay" /etc/mtab; then
+        return 0  # Está en un Live ISO
+    else
+        return 1  # No está en un Live ISO
+    fi
+}
+
 # Verificar si gum está instalado
 if ! command -v gum &> /dev/null; then
-    echo "gum no está instalado. Instalando gum..."
+    echo "gum no está instalado. Intentando liberar espacio y luego instalar gum..."
+    
+    # Verificar si estamos en un entorno Live ISO
+    if is_live_iso; then
+        echo "Detectado entorno Live ISO. Liberando espacio automáticamente..."
+        sudo rm -rf /var/cache/pacman/pkg/*
+    else
+        echo "No se detectó un entorno Live ISO. No se realizará la limpieza automática."
+    fi
+
+    # Intentar instalar gum
     if command -v pacman &> /dev/null; then
+        echo "Instalando gum..."
         sudo pacman -S --noconfirm gum
     else
         echo "No se pudo instalar gum. Por favor, instálalo manualmente."
