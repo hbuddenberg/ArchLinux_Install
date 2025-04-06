@@ -1,4 +1,5 @@
 #!/bin/bash
+clear
 
 # Función para verificar si estamos en un entorno Live ISO
 function is_live_iso {
@@ -30,6 +31,8 @@ if ! command -v gum &> /dev/null; then
         exit 1
     fi
 fi
+
+clear 
 
 # Colores Gameboy
 HEX_DARK_GREEN="#0f380f"

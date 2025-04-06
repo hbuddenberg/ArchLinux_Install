@@ -1,17 +1,52 @@
 #!/bin/bash
 clear
 
-# Verifica si el script se ejecuta como root
-if [[ $EUID -ne 0 ]]; then
-    echo "Este script debe ejecutarse como root"
-    exit 1
+# Función para verificar si estamos en un entorno Live ISO
+function is_live_iso {
+    if grep -q "overlay" /etc/mtab; then
+        return 0  # Está en un Live ISO
+    else
+        return 1  # No está en un Live ISO
+    fi
+}
+
+# Verificar si gum está instalado
+if ! command -v gum &> /dev/null; then
+    echo "gum no está instalado. Intentando liberar espacio y luego instalar gum..."
+    
+    # Verificar si estamos en un entorno Live ISO
+    if is_live_iso; then
+        echo "Detectado entorno Live ISO. Liberando espacio automáticamente..."
+        sudo rm -rf /var/cache/pacman/pkg/*
+    else
+        echo "No se detectó un entorno Live ISO. No se realizará la limpieza automática."
+    fi
+
+    # Intentar instalar gum
+    if command -v pacman &> /dev/null; then
+        echo "Instalando gum..."
+        sudo pacman -S --noconfirm gum
+    else
+        echo "No se pudo instalar gum. Por favor, instálalo manualmente."
+        exit 1
+    fi
 fi
 
-# Verifica si GUM está instalado, si no, lo instala
-if ! command -v gum &> /dev/null; then
-    echo "GUM no está instalado. Instalándolo ahora..."
-    sudo pacman -Sy --noconfirm gum || { echo "Error al instalar GUM. Por favor, instálalo manualmente."; exit 1; }
+# Usar gum para validar si el script está siendo ejecutado como superusuario
+if [[ $EUID -ne 0 ]]; then
+    gum style --foreground 212 "Este script requiere permisos de superusuario."
+    if gum confirm "¿Quieres reiniciar el script con 'sudo'?" --affirmative "Sí" --negative "No"; then
+        exec sudo bash "$0" "$@"
+    else
+        gum style --foreground 9 "No se puede continuar sin permisos de superusuario. Saliendo..."
+        exit 1
+    fi
 fi
+
+# Aquí continúa el resto del script...
+gum style --foreground 10 "¡Permisos de superusuario detectados! Continuando con el script..."
+
+clear 
 
 # Función para habilitar NTP
 function habilitar_ntp {
