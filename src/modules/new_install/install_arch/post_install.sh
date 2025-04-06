@@ -1,0 +1,72 @@
+#!/bin/bash
+clear
+# Verifica si el script se ejecuta como root
+if [[ $EUID -ne 0 ]]; then
+    echo "Este script debe ejecutarse como root" 
+    exit 1
+fi
+
+# Obtener la ruta del directorio del script actual de forma dinámica
+if [ -z "$SCRIPT_DIR" ]; then
+    SCRIPT_DIR=$(dirname "$(realpath "$BASH_SOURCE")")
+fi
+SCRIPT_DIR_ORIGINAL=$SCRIPT_DIR
+echo "directorio actual: $SCRIPT_DIR"
+
+# Función para configurar el sistema dentro del chroot
+function configure_system() {
+
+    # Ejecutar los comandos directamente dentro del entorno chroot
+    SCRIPT_DIR="/tmp/ArchLinux_Install"
+    arch-chroot /mnt /bin/bash -c "
+clear
+pacman --noconfirm -Sy git
+cd /tmp
+git clone https://github.com/HansBuddenbergBlamey/ArchLinux_Install.git
+cd /tmp/ArchLinux_Install
+git reset --hard HEAD
+git pull origin main
+chmod +x /tmp/ArchLinux_Install/src/modules/post_install/chroot_commands.sh
+sh /tmp/ArchLinux_Install/src/modules/post_install/chroot_commands.sh
+chmod +x /tmp/ArchLinux_Install/src/modules/swap/main.sh
+sh /tmp/ArchLinux_Install/src/modules/swap/main.sh
+"
+
+    echo "---------------------------------------------------"
+}
+
+# Función para desmontar las particiones
+function unmount_partitions() {
+    read -p "¿Desea desmontar las particiones ahora? (s/n) [s]: " UNMOUNT_NOW
+    UNMOUNT_NOW=${UNMOUNT_NOW:-s}
+    if [[ $UNMOUNT_NOW == "s" ]]; then
+        echo "Desmontando las particiones..."
+        umount -R /mnt || umount -l /mnt
+        echo "---------------------------------------------------"
+    else
+        echo "Las particiones no se desmontaron."
+    fi
+}
+
+# Función para reiniciar el sistema
+function restart() {
+    read -p "¿Desea reiniciar el sistema ahora? (s/n) [s]: " RESTART_NOW
+    RESTART_NOW=${RESTART_NOW:-s}
+    if [[ $RESTART_NOW == "s" ]]; then
+        read -p "Presiona Enter para reiniciar el sistema..."
+        reboot now
+    else
+        echo "El sistema no se reinició."
+    fi
+}
+
+# Función principal
+function main() {
+    configure_system
+    unmount_partitions
+    restart
+    echo "---------------------------------------------------"
+}
+
+# Ejecutar la función principal
+main
