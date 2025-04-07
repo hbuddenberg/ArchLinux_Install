@@ -144,17 +144,6 @@ fi
 partprobe "$DISK"
 sleep 2
 
-# Formatear las particiones
-gum style --foreground 33 "Formateando particiones..."
-mkfs.fat -F32 "${DISK}1"  # EFI (FAT32)
-mkfs.btrfs -f "${DISK}2"  # / (BTRFS)
-
-if [[ "$VM_OPTION" == "s" && "$VM_SIZE" -gt 0 ]]; then
-    mkfs.btrfs -f "${DISK}3"  # VM (BTRFS)
-fi
-
-gum style --foreground 10 "Particiones creadas y formateadas con éxito."
-
 # Detectar automáticamente el prefijo de las particiones según el tipo de disco
 gum style --foreground 33 "Detectando prefijo de particiones..."
 if [[ "$DISK_NAME" == nvme* ]]; then
@@ -169,6 +158,7 @@ PART2="${DISK}${PART_SUFFIX}2"  # Partición raíz
 PART3="${DISK}${PART_SUFFIX}3"  # Partición VM (si aplica)
 
 # Verificar que las particiones existen antes de continuar
+gum style --foreground 33 "Verificando que las particiones existen..."
 if [[ ! -b "$PART1" ]]; then
     gum style --foreground 196 "Error: La partición EFI ($PART1) no existe."
     exit 1
@@ -183,6 +173,17 @@ if [[ "$VM_OPTION" == "s" && "$VM_SIZE" -gt 0 && ! -b "$PART3" ]]; then
     gum style --foreground 196 "Error: La partición VM ($PART3) no existe."
     exit 1
 fi
+
+# Formatear las particiones
+gum style --foreground 33 "Formateando particiones..."
+mkfs.fat -F32 "$PART1"  # EFI (FAT32)
+mkfs.btrfs -f "$PART2"  # / (BTRFS)
+
+if [[ "$VM_OPTION" == "s" && "$VM_SIZE" -gt 0 ]]; then
+    mkfs.btrfs -f "$PART3"  # VM (BTRFS)
+fi
+
+gum style --foreground 10 "Particiones creadas y formateadas con éxito."
 
 # Etiquetar particiones
 gum style --foreground 33 "Etiquetando particiones..."
