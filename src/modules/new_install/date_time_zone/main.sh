@@ -68,8 +68,12 @@ function configurar_zona_horaria {
         while true; do
             zona_horaria=$(gum input --placeholder "Ingrese la zona horaria ('mostrar' para ver todas)")
             if [ "$zona_horaria" == "mostrar" ]; then
-                # Generar lista de zonas horarias y permitir selección con gum
+                gum style --foreground 212 --bold "Generando lista de zonas horarias disponibles..."
                 zona_horaria=$(timedatectl list-timezones | gum choose --no-limit --header "Seleccione una zona horaria:")
+                if [ -z "$zona_horaria" ]; then
+                    gum style --foreground 9 --bold "No se seleccionó ninguna zona horaria. Intente nuevamente."
+                    continue
+                fi
             fi
 
             if timedatectl list-timezones | grep -q "^$zona_horaria$"; then
