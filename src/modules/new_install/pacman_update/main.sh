@@ -64,8 +64,8 @@ sed -i '/^#\[multilib\]/{N;s/#\(\[multilib\]\)\n#\(Include = \/etc\/pacman.d\/mi
 gum style --foreground 34 "Cambios aplicados a $PACMAN_CONF"
 
 # Preguntar si se desea usar reflector con un encabezado claro
-USE_REFLECTOR=$(gum choose --no-limit --header "¿Quieres usar Reflector para optimizar los mirrors de Arch Linux?" "Sí" "No")
-if [[ "$USE_REFLECTOR" == "Sí" ]]; then
+USE_REFLECTOR=$(gum choose --header "¿Quieres usar Reflector para optimizar los mirrors de Arch Linux?" --item.foreground="green" "Sí, optimizar mirrors" --item.foreground="red" "No, continuar sin optimizar")
+if [[ "$USE_REFLECTOR" == "Sí, optimizar mirrors" ]]; then
     ## Reflector
     DEFAULT_COUNTRY="Chile"
     COUNTRY=$(gum input --placeholder "Ingrese el país para reflector (predeterminado: Chile)")
