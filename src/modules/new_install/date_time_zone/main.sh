@@ -96,15 +96,23 @@ function listar_localizaciones {
     cat /usr/share/i18n/SUPPORTED
 }
 
-# Función para configurar la localización con confirmación inicial
+# Función para configurar la localización con selección de lista
 function configurar_localizacion {
     if gum confirm "¿Desea usar la localización predeterminada 'es_CL.UTF-8 UTF-8'?" --affirmative "Sí" --negative "No"; then
         localizacion="es_CL.UTF-8 UTF-8"
     else
-        listar_localizaciones
+        gum style --foreground 212 --bold "Generando lista de localizaciones disponibles..."
         while true; do
-            localizacion=$(gum input --placeholder "Ingrese la localización:")
+            # Mostrar lista de localizaciones directamente
+            localizacion=$(cat /usr/share/i18n/SUPPORTED | gum choose --header "Seleccione una localización:")
+            
+            if [ -z "$localizacion" ]; then
+                gum style --foreground 9 --bold "No se seleccionó ninguna localización. Intente nuevamente."
+                continue
+            fi
+
             if grep -q "^$localizacion$" /usr/share/i18n/SUPPORTED; then
+                gum style --foreground 10 --bold "Localización seleccionada: $localizacion"
                 break
             else
                 gum style --foreground 9 --bold "Localización no válida. Por favor, intente nuevamente."
@@ -125,15 +133,23 @@ function listar_idiomas {
     localectl list-locales
 }
 
-# Función para configurar el idioma con confirmación inicial
+# Función para configurar el idioma con selección de lista
 function configurar_idioma {
     if gum confirm "¿Desea usar el idioma predeterminado 'es_CL.UTF-8'?" --affirmative "Sí" --negative "No"; then
         idioma="es_CL.UTF-8"
     else
-        listar_idiomas
+        gum style --foreground 212 --bold "Generando lista de idiomas disponibles..."
         while true; do
-            idioma=$(gum input --placeholder "Ingrese el idioma:")
+            # Mostrar lista de idiomas directamente
+            idioma=$(localectl list-locales | gum choose --header "Seleccione un idioma:")
+            
+            if [ -z "$idioma" ]; then
+                gum style --foreground 9 --bold "No se seleccionó ningún idioma. Intente nuevamente."
+                continue
+            fi
+
             if localectl list-locales | grep -q "^$idioma$"; then
+                gum style --foreground 10 --bold "Idioma seleccionado: $idioma"
                 break
             else
                 gum style --foreground 9 --bold "Idioma no válido. Por favor, intente nuevamente."
@@ -151,15 +167,23 @@ function listar_teclados {
     localectl list-keymaps
 }
 
-# Función para configurar el teclado con confirmación inicial
+# Función para configurar el teclado con selección de lista
 function configurar_teclado {
     if gum confirm "¿Desea usar la distribución de teclado predeterminada 'la-latin1'?" --affirmative "Sí" --negative "No"; then
         teclado="la-latin1"
     else
-        listar_teclados
+        gum style --foreground 212 --bold "Generando lista de distribuciones de teclado disponibles..."
         while true; do
-            teclado=$(gum input --placeholder "Ingrese la distribución del teclado:")
+            # Mostrar lista de teclados directamente
+            teclado=$(localectl list-keymaps | gum choose --header "Seleccione una distribución de teclado:")
+            
+            if [ -z "$teclado" ]; then
+                gum style --foreground 9 --bold "No se seleccionó ninguna distribución de teclado. Intente nuevamente."
+                continue
+            fi
+
             if localectl list-keymaps | grep -q "^$teclado$"; then
+                gum style --foreground 10 --bold "Distribución de teclado seleccionada: $teclado"
                 break
             else
                 gum style --foreground 9 --bold "Distribución de teclado no válida. Por favor, intente nuevamente."
