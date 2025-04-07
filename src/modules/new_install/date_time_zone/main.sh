@@ -60,26 +60,30 @@ function listar_zonas_horarias {
     timedatectl list-timezones
 }
 
-# Función para configurar la zona horaria con selección interactiva
+# Función para configurar la zona horaria con confirmación inicial
 function configurar_zona_horaria {
-    while true; do
-        zona_horaria=$(gum input --placeholder "Ingrese la zona horaria (Enter para 'America/Santiago', 'mostrar' para ver todas)")
-        zona_horaria=${zona_horaria:-America/Santiago}
-        if [ "$zona_horaria" == "mostrar" ]; then
-            # Generar lista de zonas horarias y permitir selección con gum
-            zona_horaria=$(timedatectl list-timezones | gum choose --no-limit --header "Seleccione una zona horaria:")
-        fi
+    if gum confirm "¿Desea usar la zona horaria predeterminada 'America/Santiago'?" --affirmative "Sí" --negative "No"; then
+        zona_horaria="America/Santiago"
+    else
+        while true; do
+            zona_horaria=$(gum input --placeholder "Ingrese la zona horaria ('mostrar' para ver todas)")
+            if [ "$zona_horaria" == "mostrar" ]; then
+                # Generar lista de zonas horarias y permitir selección con gum
+                zona_horaria=$(timedatectl list-timezones | gum choose --no-limit --header "Seleccione una zona horaria:")
+            fi
 
-        if timedatectl list-timezones | grep -q "^$zona_horaria$"; then
-            gum style --foreground 212 --bold "Configurando zona horaria a $zona_horaria..."
-            timedatectl set-timezone "$zona_horaria"
-            ln -sf /usr/share/zoneinfo/$zona_horaria /etc/localtime
-            hwclock --systohc
-            break
-        else
-            gum style --foreground 9 --bold "Zona horaria no válida. Por favor, intente nuevamente."
-        fi
-    done
+            if timedatectl list-timezones | grep -q "^$zona_horaria$"; then
+                break
+            else
+                gum style --foreground 9 --bold "Zona horaria no válida. Por favor, intente nuevamente."
+            fi
+        done
+    fi
+
+    gum style --foreground 212 --bold "Configurando zona horaria a $zona_horaria..."
+    timedatectl set-timezone "$zona_horaria"
+    ln -sf /usr/share/zoneinfo/$zona_horaria /etc/localtime
+    hwclock --systohc
 }
 
 # Función para listar localizaciones
