@@ -92,24 +92,28 @@ function listar_localizaciones {
     cat /usr/share/i18n/SUPPORTED
 }
 
-# Función para configurar la localización
+# Función para configurar la localización con confirmación inicial
 function configurar_localizacion {
-    while true; do
-        localizacion=$(gum input --placeholder "Ingrese la localización (Enter para 'es_CL.UTF-8 UTF-8', 'mostrar' para ver todas)")
-        localizacion=${localizacion:-es_CL.UTF-8 UTF-8}
-        if [ "$localizacion" == "mostrar" ]; then
-            listar_localizaciones
-        elif grep -q "^$localizacion$" /usr/share/i18n/SUPPORTED; then
-            gum style --foreground 212 --bold "Configurando localización a $localizacion..."
-            sudo sed -i '/^[^#]/d' /etc/locale.gen
-            echo "$localizacion" | sudo tee -a /etc/locale.gen
-            sudo locale-gen
-            echo "LANG=${localizacion%% *}" | sudo tee /etc/locale.conf
-            break
-        else
-            gum style --foreground 9 --bold "Localización no válida. Por favor, intente nuevamente."
-        fi
-    done
+    if gum confirm "¿Desea usar la localización predeterminada 'es_CL.UTF-8 UTF-8'?" --affirmative "Sí" --negative "No"; then
+        localizacion="es_CL.UTF-8 UTF-8"
+    else
+        while true; do
+            localizacion=$(gum input --placeholder "Ingrese la localización ('mostrar' para ver todas)")
+            if [ "$localizacion" == "mostrar" ]; then
+                listar_localizaciones
+            elif grep -q "^$localizacion$" /usr/share/i18n/SUPPORTED; then
+                break
+            else
+                gum style --foreground 9 --bold "Localización no válida. Por favor, intente nuevamente."
+            fi
+        done
+    fi
+
+    gum style --foreground 212 --bold "Configurando localización a $localizacion..."
+    sudo sed -i '/^[^#]/d' /etc/locale.gen
+    echo "$localizacion" | sudo tee -a /etc/locale.gen
+    sudo locale-gen
+    echo "LANG=${localizacion%% *}" | sudo tee /etc/locale.conf
 }
 
 # Función para listar idiomas
@@ -118,21 +122,25 @@ function listar_idiomas {
     localectl list-locales
 }
 
-# Función para configurar el idioma
+# Función para configurar el idioma con confirmación inicial
 function configurar_idioma {
-    while true; do
-        idioma=$(gum input --placeholder "Ingrese el idioma (Enter para 'es_CL.UTF-8', 'mostrar' para ver todos)")
-        idioma=${idioma:-es_CL.UTF-8}
-        if [ "$idioma" == "mostrar" ]; then
-            listar_idiomas
-        elif localectl list-locales | grep -q "^$idioma$"; then
-            gum style --foreground 212 --bold "Configurando idioma a $idioma..."
-            localectl set-locale LANG=$idioma
-            break
-        else
-            gum style --foreground 9 --bold "Idioma no válido. Por favor, intente nuevamente."
-        fi
-    done
+    if gum confirm "¿Desea usar el idioma predeterminado 'es_CL.UTF-8'?" --affirmative "Sí" --negative "No"; then
+        idioma="es_CL.UTF-8"
+    else
+        while true; do
+            idioma=$(gum input --placeholder "Ingrese el idioma ('mostrar' para ver todos)")
+            if [ "$idioma" == "mostrar" ]; then
+                listar_idiomas
+            elif localectl list-locales | grep -q "^$idioma$"; then
+                break
+            else
+                gum style --foreground 9 --bold "Idioma no válido. Por favor, intente nuevamente."
+            fi
+        done
+    fi
+
+    gum style --foreground 212 --bold "Configurando idioma a $idioma..."
+    localectl set-locale LANG=$idioma
 }
 
 # Función para listar distribuciones de teclado
@@ -141,21 +149,25 @@ function listar_teclados {
     localectl list-keymaps
 }
 
-# Función para configurar el teclado
+# Función para configurar el teclado con confirmación inicial
 function configurar_teclado {
-    while true; do
-        teclado=$(gum input --placeholder "Ingrese la distribución del teclado (Enter para 'la-latin1', 'mostrar' para ver todas)")
-        teclado=${teclado:-la-latin1}
-        if [ "$teclado" == "mostrar" ]; then
-            listar_teclados
-        elif localectl list-keymaps | grep -q "^$teclado$"; then
-            gum style --foreground 212 --bold "Configurando distribución del teclado a $teclado..."
-            localectl set-keymap $teclado
-            break
-        else
-            gum style --foreground 9 --bold "Distribución de teclado no válida. Por favor, intente nuevamente."
-        fi
-    done
+    if gum confirm "¿Desea usar la distribución de teclado predeterminada 'la-latin1'?" --affirmative "Sí" --negative "No"; then
+        teclado="la-latin1"
+    else
+        while true; do
+            teclado=$(gum input --placeholder "Ingrese la distribución del teclado ('mostrar' para ver todas)")
+            if [ "$teclado" == "mostrar" ]; then
+                listar_teclados
+            elif localectl list-keymaps | grep -q "^$teclado$"; then
+                break
+            else
+                gum style --foreground 9 --bold "Distribución de teclado no válida. Por favor, intente nuevamente."
+            fi
+        done
+    fi
+
+    gum style --foreground 212 --bold "Configurando distribución del teclado a $teclado..."
+    localectl set-keymap $teclado
 }
 
 # Función para mostrar el estado actual
