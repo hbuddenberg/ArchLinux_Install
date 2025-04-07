@@ -155,10 +155,8 @@ fi
 
 gum style --foreground 10 "Particiones creadas y formateadas con éxito."
 
-# Etiquetar particiones
-gum style --foreground 33 "Etiquetando particiones..."
-
 # Detectar automáticamente el prefijo de las particiones según el tipo de disco
+gum style --foreground 33 "Detectando prefijo de particiones..."
 if [[ "$DISK_NAME" == nvme* ]]; then
     PART_SUFFIX="p"  # Para discos NVMe, las particiones tienen el sufijo 'p'
 else
@@ -170,7 +168,24 @@ PART1="${DISK}${PART_SUFFIX}1"  # Partición EFI
 PART2="${DISK}${PART_SUFFIX}2"  # Partición raíz
 PART3="${DISK}${PART_SUFFIX}3"  # Partición VM (si aplica)
 
+# Verificar que las particiones existen antes de continuar
+if [[ ! -b "$PART1" ]]; then
+    gum style --foreground 196 "Error: La partición EFI ($PART1) no existe."
+    exit 1
+fi
+
+if [[ ! -b "$PART2" ]]; then
+    gum style --foreground 196 "Error: La partición raíz ($PART2) no existe."
+    exit 1
+fi
+
+if [[ "$VM_OPTION" == "s" && "$VM_SIZE" -gt 0 && ! -b "$PART3" ]]; then
+    gum style --foreground 196 "Error: La partición VM ($PART3) no existe."
+    exit 1
+fi
+
 # Etiquetar particiones
+gum style --foreground 33 "Etiquetando particiones..."
 fatlabel "$PART1" "EFI"
 btrfs filesystem label "$PART2" "/"
 
