@@ -101,11 +101,10 @@ function configurar_localizacion {
     if gum confirm "¿Desea usar la localización predeterminada 'es_CL.UTF-8 UTF-8'?" --affirmative "Sí" --negative "No"; then
         localizacion="es_CL.UTF-8 UTF-8"
     else
+        listar_localizaciones
         while true; do
-            localizacion=$(gum input --placeholder "Ingrese la localización ('mostrar' para ver todas)")
-            if [ "$localizacion" == "mostrar" ]; then
-                listar_localizaciones
-            elif grep -q "^$localizacion$" /usr/share/i18n/SUPPORTED; then
+            localizacion=$(gum input --placeholder "Ingrese la localización:")
+            if grep -q "^$localizacion$" /usr/share/i18n/SUPPORTED; then
                 break
             else
                 gum style --foreground 9 --bold "Localización no válida. Por favor, intente nuevamente."
@@ -131,11 +130,10 @@ function configurar_idioma {
     if gum confirm "¿Desea usar el idioma predeterminado 'es_CL.UTF-8'?" --affirmative "Sí" --negative "No"; then
         idioma="es_CL.UTF-8"
     else
+        listar_idiomas
         while true; do
-            idioma=$(gum input --placeholder "Ingrese el idioma ('mostrar' para ver todos)")
-            if [ "$idioma" == "mostrar" ]; then
-                listar_idiomas
-            elif localectl list-locales | grep -q "^$idioma$"; then
+            idioma=$(gum input --placeholder "Ingrese el idioma:")
+            if localectl list-locales | grep -q "^$idioma$"; then
                 break
             else
                 gum style --foreground 9 --bold "Idioma no válido. Por favor, intente nuevamente."
@@ -158,11 +156,10 @@ function configurar_teclado {
     if gum confirm "¿Desea usar la distribución de teclado predeterminada 'la-latin1'?" --affirmative "Sí" --negative "No"; then
         teclado="la-latin1"
     else
+        listar_teclados
         while true; do
-            teclado=$(gum input --placeholder "Ingrese la distribución del teclado ('mostrar' para ver todas)")
-            if [ "$teclado" == "mostrar" ]; then
-                listar_teclados
-            elif localectl list-keymaps | grep -q "^$teclado$"; then
+            teclado=$(gum input --placeholder "Ingrese la distribución del teclado:")
+            if localectl list-keymaps | grep -q "^$teclado$"; then
                 break
             else
                 gum style --foreground 9 --bold "Distribución de teclado no válida. Por favor, intente nuevamente."
