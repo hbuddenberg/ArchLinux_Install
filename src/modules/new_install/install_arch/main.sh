@@ -65,10 +65,13 @@ function generate_fstab() {
 # Función principal
 function main() {
     install_base_packages
+    continue
     generate_fstab
+    continue
     gum style --foreground 212 --bold "---------------------------------------------------"
     gum style --foreground 212 --bold "Ejecutando el script de post-instalación..."
     bash "$(dirname "$0")/../install_arch/main.sh"
+    continue
 }
 
 # Ejecutar la función principal
