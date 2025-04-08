@@ -53,29 +53,26 @@ SCRIPT_DIR=$(dirname "${BASH_SOURCE[0]}")
 
 # Función para configurar swap zram
 function configure_swap_zram() {
-    echo "Configurando swap zram..."
-    read -p "¿Deseas configurar swap zram? (s/n) [n]: " configure_swap
-    configure_swap=${configure_swap:-n}
-    if [[ "$configure_swap" == "s" || "$configure_swap" == "S" ]]; then
-        read -p "Introduce el tamaño de la swap zram en GB [8]: " swap_size
-        swap_size=${swap_size:-8}
+    gum style --foreground 10 "Configurando swap zram..."
+    if gum confirm "¿Deseas configurar swap zram?" --affirmative "Sí" --negative "No"; then
+        swap_size=$(gum input --placeholder "Introduce el tamaño de la swap zram en GB [8]" --value "8")
         pacman -S --noconfirm zram-generator bc
         echo -e "[zram0]\nzram-size = ${swap_size}G\ncompression-algorithm = zstd" | tee /etc/systemd/zram-generator.conf
         systemctl daemon-reload
         systemctl start /dev/zram0
+        gum style --foreground 10 "Swap zram configurado correctamente."
         echo "---------------------------------------------------"
+    else
+        gum style --foreground 9 "Configuración de swap zram omitida."
     fi
 }
 
 # Función para configurar swap en archivo BTRFS
 function configure_swap_btrfs() {
-    echo "Configurando swap en archivo BTRFS..."
-    read -p "¿Deseas configurar swap en un archivo BTRFS? (s/n) [n]: " configure_btrfs_swap
-    configure_btrfs_swap=${configure_btrfs_swap:-n}
-    if [[ "$configure_btrfs_swap" == "s" || "$configure_btrfs_swap" == "S" ]]; then
-        read -p "Introduce el tamaño del archivo de swap en GB [8]: " swap_size
+    gum style --foreground 10 "Configurando swap en archivo BTRFS..."
+    if gum confirm "¿Deseas configurar swap en un archivo BTRFS?" --affirmative "Sí" --negative "No"; then
+        swap_size=$(gum input --placeholder "Introduce el tamaño del archivo de swap en GB [8]" --value "8")
         pacman -S --noconfirm bc
-        swap_size=${swap_size:-8}
         btrfs subvolume create /.swap
         truncate -s 0 /.swap/swapfile
         chattr +C /mnt/.swap/swapfile
@@ -84,7 +81,10 @@ function configure_swap_btrfs() {
         mkswap /.swap/swapfile
         swapon /.swap/swapfile
         echo "/.swap/swapfile none swap defaults 0 0" | tee -a /etc/fstab
+        gum style --foreground 10 "Swap en archivo BTRFS configurado correctamente."
         echo "---------------------------------------------------"
+    else
+        gum style --foreground 9 "Configuración de swap en archivo BTRFS omitida."
     fi
 }
 
