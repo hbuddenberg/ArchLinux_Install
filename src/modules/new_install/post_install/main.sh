@@ -66,29 +66,38 @@ function set_hostname() {
 function ask_root_password() {
     gum style --foreground 10 "Introduce la contraseña del root:"
     root_password=$(gum input --password)
+    if [[ -z "$root_password" ]]; then
+        gum style --foreground 9 "Error: La contraseña del root no puede estar vacía."
+        exit 1
+    fi
 }
 
 # Función para preguntar el nombre del usuario
 function set_username() {
     gum style --foreground 10 "Introduce el nombre del usuario:"
     username=$(gum input)
+    if [[ -z "$username" ]]; then
+        gum style --foreground 9 "Error: El nombre del usuario no puede estar vacío."
+        exit 1
+    fi
 }
 
 # Función para preguntar la contraseña del usuario
 function ask_user_password() {
     gum style --foreground 10 "Introduce la contraseña del usuario $username:"
     user_password=$(gum input --password)
+    if [[ -z "$user_password" ]]; then
+        gum style --foreground 9 "Error: La contraseña del usuario no puede estar vacía."
+        exit 1
+    fi
 }
 
 # Función para preguntar si se desea ingresar un usuario
 function ask_for_user_creation() {
+    gum style --foreground 10 "¿Deseas crear un usuario adicional?"
     create_user=$(gum choose --cursor.foreground="212" "Sí" "No")
     if [[ "$create_user" == "Sí" ]]; then
         set_username
-        if [[ -z "$username" ]]; then
-            gum style --foreground 9 "Error: El nombre de usuario no puede estar vacío."
-            exit 1
-        fi
         ask_user_password
     fi
 }
@@ -116,16 +125,14 @@ function install_network_manager() {
     gum style --foreground 10 "Instalando y configurando NetworkManager..."
     pacman -S --noconfirm networkmanager wpa_supplicant
     systemctl enable NetworkManager
-    systemctl start NetworkManager2
-    gum style --foreground 10 "---------------------------------------------------"
+    systemctl start NetworkManager
+    gum style --foreground 10 "NetworkManager configurado correctamente."
 }
 
 # Función para crear el script de configuración de WiFi
 function create_wifi_script() {
-    # Verificar si se desea conectar a WiFi
     connect_wifi=$(gum confirm "¿Deseas conectarte a una red WiFi?" --affirmative "Sí" --negative "No")
     if [[ "$connect_wifi" == "Sí" ]]; then
-        # Solicitar SSID y contraseña
         wifi_ssid=$(gum input --placeholder "Introduce el nombre (SSID) de la red WiFi")
         wifi_pass=$(gum input --password --placeholder "Introduce la contraseña de la red WiFi")
 
@@ -136,30 +143,19 @@ function create_wifi_script() {
 wifi_ssid="$wifi_ssid"
 wifi_pass="$wifi_pass"
 
-# Verificar qué herramienta está disponible
 if command -v iwctl &> /dev/null; then
-    gum style --foreground 10 "Conectando usando iwctl..."
     iwctl --passphrase "\$wifi_pass" station wlan0 connect "\$wifi_ssid"
 elif command -v nmcli &> /dev/null; then
-    gum style --foreground 10 "Conectando usando nmcli..."
     nmcli device wifi connect "\$wifi_ssid" password "\$wifi_pass"
 else
-    gum style --foreground 9 "No se encontraron herramientas para conectar a WiFi (iwctl o nmcli)."
-    gum style --foreground 10 "Instalando iwd para usar networkmanager..."
-    pacman -S --noconfirm networkmanager
-    systemctl enable NetworkManager
-    gum style --foreground 10 "Conectando usando networkmanager..."
-    nmcli device wifi connect "\$wifi_ssid" password "\$wifi_pass"
+    gum style --foreground 9 "No se encontraron herramientas para conectar a WiFi."
+    exit 1
 fi
-
-gum style --foreground 10 "Reiniciando servicios de red..."
-systemctl restart systemd-networkd
-gum style --foreground 10 "Conexión WiFi configurada."
 EOF
 
         chmod +x /usr/local/bin/wifi_config
         /usr/local/bin/wifi_config
-        gum style --foreground 10 "---------------------------------------------------"
+        gum style --foreground 10 "Conexión WiFi configurada correctamente."
     fi
 }
 
