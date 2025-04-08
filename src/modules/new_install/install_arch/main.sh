@@ -52,6 +52,7 @@ clear
 function install_base_packages() {
     gum style --foreground 212 --bold "Instalando los paquetes base..."
     pacstrap -K /mnt base base-devel btrfs-progs linux linux-firmware dhcpcd openssh vim git intel-ucode --overwrite '*'
+    continue
     gum style --foreground 212 --bold "---------------------------------------------------"
 }
 
