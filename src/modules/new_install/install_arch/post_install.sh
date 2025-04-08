@@ -68,8 +68,8 @@ git clone -b develop https://github.com/HansBuddenbergBlamey/ArchLinux_Install.g
 cd /tmp/ArchLinux_Install
 git reset --hard HEAD
 git pull origin main
-chmod +x /tmp/ArchLinux_Install/src/modules/new_install/post_install/chroot_commands.sh
-sh /tmp/ArchLinux_Install/src/modules/new_install/post_install/chroot_commands.sh
+chmod +x /tmp/ArchLinux_Install/src/modules/new_install/post_install/main.sh
+sh /tmp/ArchLinux_Install/src/modules/new_install/post_install/main.sh
 chmod +x /tmp/ArchLinux_Install/src/modules/new_install/swap/main.sh
 sh /tmp/ArchLinux_Install/src/modules/new_install/swap/main.sh
 "
