@@ -95,6 +95,8 @@ function ask_user_password() {
 # Función para preguntar si se desea ingresar un usuario
 function ask_for_user_creation() {
     create_user=$(gum confirm "¿Deseas crear un usuario adicional?" --affirmative "Sí" --negative "No")
+    create_user=${create_user:-Sí}
+    echo "Creación de usuario: $create_user"
     if [[ "$create_user" == "Sí" ]]; then
         set_username
         ask_user_password
