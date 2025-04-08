@@ -57,23 +57,27 @@ fi
 
 # Función para preguntar el nombre del hostname
 function set_hostname() {
-    hostname=$(gum input "Introduce el nombre del hostname (por defecto: Nuc-Arch)")
+    gum style --foreground 10 "Introduce el nombre del hostname (por defecto: Nuc-Arch):"
+    hostname=$(gum input)
     hostname=${hostname:-Nuc-Arch}
 }
 
 # Función para preguntar la contraseña del root
 function ask_root_password() {
-    root_password=$(gum input --password "Introduce la contraseña del root")
+    gum style --foreground 10 "Introduce la contraseña del root:"
+    root_password=$(gum input --password)
 }
 
 # Función para preguntar el nombre del usuario
 function set_username() {
-    username=$(gum input "Introduce el nombre del usuario")
+    gum style --foreground 10 "Introduce el nombre del usuario:"
+    username=$(gum input)
 }
 
 # Función para preguntar la contraseña del usuario
 function ask_user_password() {
-    user_password=$(gum input --password "Introduce la contraseña del usuario $username")
+    gum style --foreground 10 "Introduce la contraseña del usuario $username:"
+    user_password=$(gum input --password)
 }
 
 # Función para preguntar si se desea ingresar un usuario
