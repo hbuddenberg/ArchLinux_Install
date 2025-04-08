@@ -197,11 +197,40 @@ fi
 # Preguntar si se desea montar las particiones inmediatamente
 if gum confirm "¿Desea montar las particiones ahora?"; then
     gum style --foreground 33 "Montando particiones..."
+    
+    #   # Validar si las particiones están montadas
+    if mount | grep "${PART2}" > /dev/null; then
+        echo "La partición / ya está montada, desmontando..."
+        umount "${PART2}"
+    fi
+    if mount | grep "${PART1}" > /dev/null; then
+        echo "La partición EFI ya está montada, desmontando..."
+        umount "${PART1}"
+    fi
+
+    # Montar la partición BTRFS
     mount "$PART2" /mnt
+    
+    # Crear subvolúmenes
     btrfs subvolume create /mnt/@
+    btrfs subvolume create /mnt/@cache
     btrfs subvolume create /mnt/@home
     btrfs subvolume create /mnt/@snapshots
+    btrfs subvolume create /mnt/@log
     umount /mnt
+
+    # Montar el sistema raíz con opciones optimizadas
+    mount -o compress=zstd:1,noatime,subvol=@ "${PART2}" /mnt
+    mkdir -p /mnt/{boot/efi,home,.snapshots,var/{cache,log}}
+    mount -o compress=zstd:1,noatime,subvol=@cache "${PART2}" /mnt/var/cache
+    mount -o compress=zstd:1,noatime,subvol=@home "${PART2}" /mnt/home
+    mount -o compress=zstd:1,noatime,subvol=@log "${PART2}" /mnt/var/log
+    mount -o compress=zstd:1,noatime,subvol=@snapshots "${PART2}" /mnt/.snapshots
+    mount /dev/sda1 /mnt/boot
+
+    # Mostrar la tabla de particiones y nombres usando lsblk
+    echo "Tabla de particiones actualizada:"
+    lsblk -f "$DISK" -o NAME,FSTYPE,SIZE,FSSIZE,FSUSED,FSAVAIL,FSUSE%,PATH,MOUNTPOINTS,LABEL
     gum style --foreground 10 "Particiones montadas con éxito."
 else
     gum style --foreground 196 "Particiones creadas pero no montadas."
