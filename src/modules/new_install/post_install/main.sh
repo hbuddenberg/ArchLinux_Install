@@ -132,8 +132,8 @@ function install_network_manager() {
 function create_wifi_script() {
     connect_wifi=$(gum confirm "¿Deseas conectarte a una red WiFi?" --affirmative "Sí" --negative "No")
     if [[ "$connect_wifi" == "Sí" ]]; then
-        wifi_ssid=$(gum input --placeholder "Introduce el nombre (SSID) de la red WiFi")
-        wifi_pass=$(gum input --password --placeholder "Introduce la contraseña de la red WiFi")
+        wifi_ssid=$(gum input "Introduce el nombre (SSID) de la red WiFi")
+        wifi_pass=$(gum input --password "Introduce la contraseña de la red WiFi")
 
         gum style --foreground 10 "Configurando conexión de red..."
         cat <<EOF > /usr/local/bin/wifi_config
