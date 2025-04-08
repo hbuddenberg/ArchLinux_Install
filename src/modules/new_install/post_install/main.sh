@@ -57,23 +57,23 @@ fi
 
 # Función para preguntar el nombre del hostname
 function set_hostname() {
-    hostname=$(gum input --placeholder "Introduce el nombre del hostname (por defecto: Nuc-Arch)")
+    hostname=$(gum input "Introduce el nombre del hostname (por defecto: Nuc-Arch)")
     hostname=${hostname:-Nuc-Arch}
 }
 
 # Función para preguntar la contraseña del root
 function ask_root_password() {
-    root_password=$(gum input --password --placeholder "Introduce la contraseña del root")
+    root_password=$(gum input --password "Introduce la contraseña del root")
 }
 
 # Función para preguntar el nombre del usuario
 function set_username() {
-    username=$(gum input --placeholder "Introduce el nombre del usuario")
+    username=$(gum input "Introduce el nombre del usuario")
 }
 
 # Función para preguntar la contraseña del usuario
 function ask_user_password() {
-    user_password=$(gum input --password --placeholder "Introduce la contraseña del usuario $username")
+    user_password=$(gum input --password "Introduce la contraseña del usuario $username")
 }
 
 # Función para preguntar si se desea ingresar un usuario
@@ -93,7 +93,7 @@ function ask_for_user_creation() {
 function configure_hostname() {
     echo "Configurando el nombre del host..."
     echo "$hostname" > /etc/hostname
-    echo "---------------------------------------------------"
+    gum style --foreground 10 "---------------------------------------------------"
 }
 
 # Función para configurar el archivo hosts
@@ -104,7 +104,7 @@ function configure_hosts_file() {
 ::1         localhost
 127.0.1.1   $hostname.localdomain $hostname
 EOT
-    echo "---------------------------------------------------"
+    gum style --foreground 10 "---------------------------------------------------"
 }
 
 # Función para instalar y configurar NetworkManager
@@ -163,14 +163,14 @@ EOF
 function configure_systemd_boot() {
     echo "Instalando y configurando systemd-boot..."
     bootctl install
-    echo "---------------------------------------------------"
+    gum style --foreground 10 "---------------------------------------------------"
 }
 
 # Función para crear el directorio de entradas del bootloader
 function create_bootloader_entries() {
     echo "Creando el directorio de entradas del bootloader..."
     mkdir -p /boot/loader/entries
-    echo "---------------------------------------------------"
+    gum style --foreground 10 "---------------------------------------------------"
 }
 
 # Función para configurar el loader
@@ -183,7 +183,7 @@ default arch
 #console-mode max
 #console-mode keep
 EOT
-    echo "---------------------------------------------------"
+    gum style --foreground 10 "---------------------------------------------------"
 }
 
 # Función para crear la entrada de i915 para Boot Splash
@@ -194,7 +194,7 @@ options i915 fastboot=1
 options i915 enable_guc=2
 options i915 enable_fbc=1
 EOF
-    echo "---------------------------------------------------"
+    gum style --foreground 10 "---------------------------------------------------"
 }
 
 # Función para crear la entrada de arranque predeterminada
@@ -207,7 +207,7 @@ initrd  /intel-ucode.img
 initrd  /initramfs-linux.img
 options root=/dev/sda2 rw rootfstype=btrfs quiet loglevel=3 systemd.show_status=auto rd.udev.log_level=3 rootflags=subvol=/@
 EOT
-    echo "---------------------------------------------------"
+    gum style --foreground 10 "---------------------------------------------------"
 }
 
 # Función para crear la entrada de arranque de fallback
@@ -220,7 +220,7 @@ initrd  /intel-ucode.img
 initrd  /initramfs-linux-fallback.img
 options root=/dev/sda2 rw rootfstype=btrfs rootflags=subvol=/@
 EOT
-    echo "---------------------------------------------------"
+    gum style --foreground 10 "---------------------------------------------------"
 }
 
 # Función para modificar mkinitcpio.conf
@@ -228,7 +228,7 @@ function modify_mkinitcpio_conf() {
     echo "Initramfs: Modificando /etc/mkinitcpio.conf para agregar el hook btrfs..."
     sed -i 's/HOOKS=(\(.*\) block \(.*\) filesystem \(.*\))/HOOKS=(\1 block btrfs \2 filesystem \3)/' /etc/mkinitcpio.conf
     mkinitcpio -p linux
-    echo "---------------------------------------------------"
+    gum style --foreground 10 "---------------------------------------------------"
 }
 
 # Función para generar la imagen initramfs
@@ -239,7 +239,7 @@ function generate_initramfs() {
         echo "Error: La generación de la imagen initramfs falló."
         exit 1
     fi
-    echo "---------------------------------------------------"
+    gum style --foreground 10 "---------------------------------------------------"
 }
 
 # Función para establecer la contraseña de root
@@ -250,7 +250,7 @@ function set_root_password() {
         echo "Error: No se pudo cambiar la contraseña de root."
         exit 1
     fi
-    echo "---------------------------------------------------"
+    gum style --foreground 10 "---------------------------------------------------"
 }
 
 # Función para crear el usuario
@@ -264,7 +264,7 @@ function create_user() {
             echo "Error: No se pudo cambiar la contraseña del usuario $username."
             exit 1
         fi
-        echo "---------------------------------------------------"
+        gum style --foreground 10 "---------------------------------------------------"
     else
         echo "No se creó ningún usuario."
     fi
@@ -274,14 +274,14 @@ function create_user() {
 function configure_sudoers() {
     echo "Configurando permisos de sudo para el grupo wheel..."
     sed -i 's/^# %wheel ALL=(ALL:ALL) ALL/%wheel ALL=(ALL:ALL) ALL/' /etc/sudoers
-    echo "---------------------------------------------------"
+    gum style --foreground 10 "---------------------------------------------------"
 }
 
 # Función para habilitar el servicio SSH
 function enable_ssh() {
     echo "Habilitando el servicio SSH..."
     systemctl enable sshd
-    echo "---------------------------------------------------"
+    gum style --foreground 10 "---------------------------------------------------"
 }
 
 # Función para actualizar los directorios de usuario
@@ -289,14 +289,14 @@ function update_user_dirs() {
     echo "Actualizando los directorios de usuario..."
     pacman -S --noconfirm xdg-user-dirs
     sudo -u $username xdg-user-dirs-update
-    echo "---------------------------------------------------"
+    gum style --foreground 10 "---------------------------------------------------"
 }
 
 # Función para enmascarar el dispositivo TPM
 function mask_tpm_device() {
     echo "Enmascarando el dispositivo TPM..."
     systemctl mask dev-tpmrm0.device
-    echo "---------------------------------------------------"
+    gum style --foreground 10 "---------------------------------------------------"
 }
 
 # Función para configurar auto login en tty1
@@ -324,7 +324,7 @@ function configure_auto_login() {
         systemctl daemon-reload
         systemctl restart getty@tty1
     fi
-    echo "---------------------------------------------------"
+    gum style --foreground 10 "---------------------------------------------------"
 }
 
 # Función para habilitar las cuotas de Btrfs
@@ -335,7 +335,7 @@ function enable_btrfs_quotas() {
         echo "Error: No se pudieron habilitar las cuotas de Btrfs."
         exit 1
     fi
-    echo "---------------------------------------------------"
+    gum style --foreground 10 "---------------------------------------------------"
 }
 
 # Función para instalar Timeshift y crear una copia de seguridad
@@ -347,7 +347,7 @@ function install_timeshift() {
         enable_btrfs_quotas
         echo "Generando la primera copia de seguridad con Timeshift..."
         timeshift --create --comments "Primera copia de seguridad" --tags D
-        echo "---------------------------------------------------"
+        gum style --foreground 10 "---------------------------------------------------"
     fi
 }
 
@@ -358,7 +358,7 @@ function run_additional_scripts() {
     chmod +x /tmp/ArchLinux_Install/src/modules/pacman_update/main.sh
     sudo -u $username /tmp/ArchLinux_Install/src/modules/date_time_zone/main.sh
     sudo -u $username /tmp/ArchLinux_Install/src/modules/pacman_update/main.sh
-    echo "---------------------------------------------------"
+    gum style --foreground 10 "---------------------------------------------------"
 }
 
 # Función principal
