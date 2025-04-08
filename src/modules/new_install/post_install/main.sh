@@ -141,10 +141,12 @@ function create_wifi_script() {
     else
         connect_wifi="No"
     fi
-
+    read
     if [[ "$connect_wifi" == "Sí" ]]; then
-        wifi_ssid=$(gum input "Introduce el nombre (SSID) de la red WiFi:")
-        wifi_pass=$(gum input --password "Introduce la contraseña de la red WiFi ${wifi_ssid}:")
+        gum style --foreground 10 "Introduce el nombre (SSID) de la red WiFi:"
+        wifi_ssid=$(gum input)
+        gum style --foreground 10 "Introduce la contraseña de la red WiFi ${wifi_ssid}:"
+        wifi_pass=$(gum input --password)
 
         gum style --foreground 10 "Configurando conexión de red..."
         cat <<EOF > /usr/local/bin/wifi_config
