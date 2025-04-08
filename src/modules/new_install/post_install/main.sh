@@ -94,8 +94,13 @@ function ask_user_password() {
 
 # Función para preguntar si se desea ingresar un usuario
 function ask_for_user_creation() {
-    create_user=$(gum confirm "¿Deseas crear un usuario adicional?" --affirmative "Sí" --negative "No")
-    create_user=${create_user:-Sí}
+    gum style --foreground 10 "¿Deseas crear un usuario adicional?"
+    if gum confirm --affirmative "Sí" --negative "No"; then
+        create_user="Sí"
+    else
+        create_user="No"
+    fi
+
     echo "Creación de usuario: $create_user"
     if [[ "$create_user" == "Sí" ]]; then
         set_username
@@ -130,10 +135,16 @@ function install_network_manager() {
 
 # Función para crear el script de configuración de WiFi
 function create_wifi_script() {
-    connect_wifi=$(gum confirm "¿Deseas conectarte a una red WiFi?" --affirmative "Sí" --negative "No")
+    gum style --foreground 10 "¿Deseas conectarte a una red WiFi?"
+    if gum confirm --affirmative "Sí" --negative "No"; then
+        connect_wifi="Sí"
+    else
+        connect_wifi="No"
+    fi
+
     if [[ "$connect_wifi" == "Sí" ]]; then
-        wifi_ssid=$(gum input "Introduce el nombre (SSID) de la red WiFi")
-        wifi_pass=$(gum input --password "Introduce la contraseña de la red WiFi")
+        wifi_ssid=$(gum input "Introduce el nombre (SSID) de la red WiFi:")
+        wifi_pass=$(gum input --password "Introduce la contraseña de la red WiFi ${wifi_ssid}:")
 
         gum style --foreground 10 "Configurando conexión de red..."
         cat <<EOF > /usr/local/bin/wifi_config
