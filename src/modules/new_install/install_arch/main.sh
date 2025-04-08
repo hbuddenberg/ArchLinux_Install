@@ -59,6 +59,7 @@ function install_base_packages() {
 # Función para generar el archivo fstab
 function generate_fstab() {
     gum style --foreground 212 --bold "Generando el archivo fstab..."
+    continue
     genfstab -U /mnt >> /mnt/etc/fstab
     gum style --foreground 212 --bold "---------------------------------------------------"
 }
