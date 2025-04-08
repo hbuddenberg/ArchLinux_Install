@@ -72,7 +72,7 @@ function main() {
     continue
     gum style --foreground 212 --bold "---------------------------------------------------"
     gum style --foreground 212 --bold "Ejecutando el script de post-instalación..."
-    bash "$(dirname "$0")/../install_arch/main.sh"
+    bash "$(dirname "$0")/post_install.sh"
     continue
 }
 
