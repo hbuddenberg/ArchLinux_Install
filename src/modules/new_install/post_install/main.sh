@@ -116,7 +116,7 @@ function configure_hostname() {
 
 # Función para configurar el archivo hosts
 function configure_hosts_file() {
-    echo "Configurando el archivo hosts..."
+    gum style --foreground 10 "Configurando el archivo hosts..."
     cat <<EOT >> /etc/hosts
 127.0.0.1   localhost
 ::1         localhost
@@ -141,7 +141,7 @@ function create_wifi_script() {
     else
         connect_wifi="No"
     fi
-    read
+
     if [[ "$connect_wifi" == "Sí" ]]; then
         gum style --foreground 10 "Introduce el nombre (SSID) de la red WiFi:"
         wifi_ssid=$(gum input)
@@ -231,27 +231,27 @@ EOT
 
 # Función para modificar mkinitcpio.conf
 function modify_mkinitcpio_conf() {
-    echo "Initramfs: Modificando /etc/mkinitcpio.conf para agregar el hook btrfs..."
+    gum style --foreground 10 "Initramfs: Modificando /etc/mkinitcpio.conf para agregar el hook btrfs..."
     sed -i 's/HOOKS=(\(.*\) block \(.*\) filesystem \(.*\))/HOOKS=(\1 block btrfs \2 filesystem \3)/' /etc/mkinitcpio.conf
     mkinitcpio -p linux
 }
 
 # Función para generar la imagen initramfs
 function generate_initramfs() {
-    echo "Generando la imagen initramfs..."
+    gum style --foreground 10 "Generando la imagen initramfs..."
     mkinitcpio -P
     if [ $? -ne 0 ]; then
-        echo "Error: La generación de la imagen initramfs falló."
+        gum style --foreground 9 "Error: La generación de la imagen initramfs falló."
         exit 1
     fi
 }
 
 # Función para establecer la contraseña de root
 function set_root_password() {
-    echo "Estableciendo la contraseña de root..."
+    gum style --foreground 10 "Estableciendo la contraseña de root..."
     echo "root:$root_password" | chpasswd
     if [ $? -ne 0 ]; then
-        echo "Error: No se pudo cambiar la contraseña de root."
+        gum style --foreground 9 "Error: No se pudo cambiar la contraseña de root."
         exit 1
     fi
 }
@@ -259,22 +259,22 @@ function set_root_password() {
 # Función para crear el usuario
 function create_user() {
     if [[ -n "$username" ]]; then
-        echo "Creando el usuario $username..."
+        gum style --foreground 10 "Creando el usuario $username..."
         useradd -m -G wheel -s /bin/bash "$username"
-        echo "Estableciendo la contraseña para el usuario $username..."
+        gum style --foreground 10 "Estableciendo la contraseña para el usuario $username..."
         echo "$username:$user_password" | chpasswd
         if [ $? -ne 0 ]; then
-            echo "Error: No se pudo cambiar la contraseña del usuario $username."
+            gum style --foreground 9 "Error: No se pudo cambiar la contraseña del usuario $username."
             exit 1
         fi
-        else
-        echo "No se creó ningún usuario."
+    else
+        gum style --foreground 9 "No se creó ningún usuario."
     fi
 }
 
 # Función para configurar permisos de sudo para el grupo wheel
 function configure_sudoers() {
-    echo "Configurando permisos de sudo para el grupo wheel..."
+    gum style --foreground 10 "Configurando permisos de sudo para el grupo wheel..."
     sed -i 's/^# %wheel ALL=(ALL:ALL) ALL/%wheel ALL=(ALL:ALL) ALL/' /etc/sudoers
 }
 
@@ -299,21 +299,21 @@ function mask_tpm_device() {
 
 # Función para configurar auto login en tty1
 function configure_auto_login() {
-    echo "Configurando auto login para root o el usuario creado en tty1..."
-    read -p "¿Deseas configurar auto login en tty1? (s/n) [n]: " auto_login
-    auto_login=${auto_login:-n}
-    if [[ "$auto_login" == "s" || "$auto_login" == "S" ]]; then
-        echo "Usuarios disponibles:"
-        echo "1) root"
-        echo "2) $username"
+    gum style --foreground 10 "¿Deseas configurar auto login en tty1?"
+    if gum confirm --affirmative "Sí" --negative "No"; then
+        gum style --foreground 10 "Usuarios disponibles:"
+        gum style --foreground 10 "1) root"
+        gum style --foreground 10 "2) $username"
 
-        read -p "Introduce el número del usuario para auto login: " user_number
+        gum style --foreground 10 "Introduce el número del usuario para auto login:"
+        user_number=$(gum input)
+
         if [[ "$user_number" == "1" ]]; then
             auto_login_user="root"
         elif [[ "$user_number" == "2" ]]; then
             auto_login_user="$username"
         else
-            echo "Número de usuario no válido."
+            gum style --foreground 9 "Número de usuario no válido."
             exit 1
         fi
 
@@ -336,14 +336,13 @@ function enable_btrfs_quotas() {
 
 # Función para instalar Timeshift y crear una copia de seguridad
 function install_timeshift() {
-    echo "Instalando Timeshift..."
-    read -p "¿Deseas crear una copia de seguridad con Timeshift ahora? (s/n): " create_backup
-    if [[ "$create_backup" == "s" || "$create_backup" == "S" ]]; then
+    gum style --foreground 10 "¿Deseas crear una copia de seguridad con Timeshift ahora?"
+    if gum confirm --affirmative "Sí" --negative "No"; then
         pacman -S --noconfirm timeshift
         enable_btrfs_quotas
-        echo "Generando la primera copia de seguridad con Timeshift..."
+        gum style --foreground 10 "Generando la primera copia de seguridad con Timeshift..."
         timeshift --create --comments "Primera copia de seguridad" --tags D
-        fi
+    fi
 }
 
 # Función para ejecutar scripts adicionales
