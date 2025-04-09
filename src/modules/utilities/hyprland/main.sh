@@ -31,7 +31,6 @@ clear_screen() {
 install_packages() {
     pacman -Sy --noconfirm hyprland sddm kitty
     systemctl enable sddm
-    systemctl start sddm
 }
 
 # Función para cambiar el layout del teclado
@@ -159,8 +158,9 @@ if gum confirm "¿Deseas instalar Hyprland, SDDM y Kitty?" --affirmative "Sí" -
     # Preguntar si se desea instalar Rofi
     install_rofi
 
-    if gum confirm "¿Desea reiniciar Display Manager?" --affirmative "Sí" --negative "No"; then
+    if gum confirm "¿Desea reiniciar Display Manager?" --affirmative "Sí" --negative "No"; then    
         systemctl restart display-manager
+        systemctl start sddm
     fi
 fi
 
