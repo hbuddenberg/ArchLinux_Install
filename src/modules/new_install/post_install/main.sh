@@ -338,8 +338,8 @@ function install_timeshift() {
 # Función para ejecutar scripts adicionales
 function run_additional_scripts() {
     gum style --foreground 10 "Ejecutando scripts adicionales..."
-    chmod +x /tmp/ArchLinux_Install/src/modules/date_time_zone/main.sh
-    chmod +x /tmp/ArchLinux_Install/src/modules/pacman_update/main.sh
+    chmod +x /tmp/ArchLinux_Install/src/modules/new_install/date_time_zone/main.sh
+    chmod +x /tmp/ArchLinux_Install/src/modules/new_install/pacman_update/main.sh
 
     gum style --foreground 10 "Ejecutando script de configuración de fecha, hora y zona horaria..."
     sudo -u $username /tmp/ArchLinux_Install/src/modules/date_time_zone/main.sh
