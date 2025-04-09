@@ -16,12 +16,13 @@ ArchLinux_install
 |   |   └── user_credentials.json               # Archivo de credenciales del usuario
 |   └─ modules/                                 # Directorio de módulos
 |       ├── new_install/                        # Directorio de nuevos módulos de instalación
-|       |   ├── main.sh                         # Script principal de los módulos
+|       |   ├── main.sh                         # Script principal del menú de instalación
 |       |   ├── date_time_zone/                 # Módulo para configurar fecha y hora
 |       |   |   ├── main.sh                     # Script principal del módulo de fecha y hora
 |       |   |   └── SUPPORTED                   # Archivo con las localizaciones soportadas
 |       |   ├── install_arch/                   # Módulo para instalar Arch Linux
-|       |   |   └── main.sh                     # Script principal del módulo de instalación de Arch Linux
+|       |   |   ├── main.sh                     # Script principal del módulo de instalación de Arch Linux
+|       |   |   └── post_install.sh             # Script de post-instalación para Arch Linux
 |       |   ├── install_by_archinstall/         # Módulo para instalar usando Archinstall
 |       |   |   └── main.sh                     # Script principal del módulo de instalación usando Archinstall
 |       |   ├── pacman_update/                  # Módulo para actualizar Pacman
@@ -29,11 +30,11 @@ ArchLinux_install
 |       |   ├── partitions/                     # Módulo para crear particiones
 |       |   |   └── main.sh                     # Script principal del módulo de particiones
 |       |   ├── post_install/                   # Módulo de post-instalación
-|       |   |   ├── chroot_commands.sh          # Script con comandos para ejecutar en chroot
 |       |   |   └── main.sh                     # Script principal del módulo de post-instalación
 |       |   └── swap/                           # Módulo para configurar swap
 |       |       └── main.sh                     # Script principal del módulo de swap
 |       └── utilities/                          # Directorio de utilidades
+|           ├── main.sh                         # Script principal del menú de utilidades
 |           ├── hyprland/                       # Utilidades relacionadas con Hyprland
 |           |   ├── hyprland.conf               # Archivo de configuración de Hyprland
 |           |   └── main.sh                     # Script principal de utilidades de Hyprland
@@ -55,7 +56,7 @@ ArchLinux_install
 ## Funcionalidades
 
 1. **Menú**: Proporciona un menú interactivo para navegar entre las diferentes opciones del script.
-2. **Instalación**: Contiene scripts para la instalación de Arch Linux.
+2. **Instalación**: Contiene scripts para la instalación de Arch Linux, incluyendo módulos para configurar particiones, zona horaria, y más.
 3. **Post-Instalación**: Incluye scripts para la configuración posterior a la instalación, organizados en módulos como `base` y `hyprland`.
 4. **Utilidades**: Scripts para validar la conexión de red y Wi-Fi, así como otras utilidades como Hyprland, Plymouth y Remmina.
 

@@ -64,7 +64,7 @@ function configure_system() {
 clear
 pacman --noconfirm -Sy git
 cd /tmp
-git clone -b develop https://github.com/HansBuddenbergBlamey/ArchLinux_Install.git
+git clone https://github.com/HansBuddenbergBlamey/ArchLinux_Install.git
 cd /tmp/ArchLinux_Install
 git reset --hard HEAD
 git pull origin main
