@@ -298,19 +298,12 @@ function mask_tpm_device() {
 # Función para configurar auto login en tty1
 function configure_auto_login() {
     if gum confirm "¿Deseas configurar auto login en tty1?" --affirmative "Sí" --negative "No"; then
-        gum style --foreground 10 "Usuarios disponibles:"
-        gum style --foreground 10 "1) root"
-        gum style --foreground 10 "2) $username"
+        gum style --foreground 10 "Selecciona el usuario para auto login (por defecto: $username):"
+        auto_login_user=$(gum choose "$username" "root" )
+        auto_login_user=${auto_login_user:-$username}
 
-        gum style --foreground 10 "Introduce el número del usuario para auto login:"
-        user_number=$(gum input)
-
-        if [[ "$user_number" == "1" ]]; then
-            auto_login_user="root"
-        elif [[ "$user_number" == "2" ]]; then
-            auto_login_user="$username"
-        else
-            gum style --foreground 9 "Número de usuario no válido."
+        if [[ -z "$auto_login_user" ]]; then
+            gum style --foreground 9 "No se seleccionó ningún usuario. Saliendo..."
             exit 1
         fi
 
