@@ -342,10 +342,10 @@ function run_additional_scripts() {
     chmod +x /tmp/ArchLinux_Install/src/modules/new_install/pacman_update/main.sh
 
     gum style --foreground 10 "Ejecutando script de configuración de fecha, hora y zona horaria..."
-    sudo -u $username /tmp/ArchLinux_Install/src/modules/date_time_zone/main.sh
+    sudo sh /tmp/ArchLinux_Install/src/modules/date_time_zone/main.sh
 
     gum style --foreground 10 "Ejecutando script de actualización de Pacman..."
-    sudo -u $username /tmp/ArchLinux_Install/src/modules/pacman_update/main.sh
+    sudo sh /tmp/ArchLinux_Install/src/modules/pacman_update/main.sh
 
     gum style --foreground 10 "Scripts adicionales ejecutados correctamente."
 }
