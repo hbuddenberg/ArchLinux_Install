@@ -94,8 +94,7 @@ function ask_user_password() {
 
 # Función para preguntar si se desea ingresar un usuario
 function ask_for_user_creation() {
-    gum style --foreground 10 "¿Deseas crear un usuario adicional?"
-    if gum confirm --affirmative "Sí" --negative "No"; then
+    if gum confirm "¿Deseas crear un usuario adicional?" --affirmative "Sí" --negative "No"; then
         create_user="Sí"
     else
         create_user="No"
@@ -135,8 +134,7 @@ function install_network_manager() {
 
 # Función para crear el script de configuración de WiFi
 function create_wifi_script() {
-    gum style --foreground 10 "¿Deseas conectarte a una red WiFi?"
-    if gum confirm --affirmative "Sí" --negative "No"; then
+    if gum confirm "¿Deseas conectarte a una red WiFi?" --affirmative "Sí" --negative "No"; then
         connect_wifi="Sí"
     else
         connect_wifi="No"
@@ -173,19 +171,19 @@ EOF
 
 # Función para configurar systemd-boot
 function configure_systemd_boot() {
-    echo "Instalando y configurando systemd-boot..."
+    gum style --foreground 10 "Instalando y configurando systemd-boot..."
     bootctl install
 }
 
 # Función para crear el directorio de entradas del bootloader
 function create_bootloader_entries() {
-    echo "Creando el directorio de entradas del bootloader..."
+    gum style --foreground 10 "Creando el directorio de entradas del bootloader..."
     mkdir -p /boot/loader/entries
 }
 
 # Función para configurar el loader
 function configure_loader() {
-    echo "Configurando el loader..."
+    gum style --foreground 10 "Configurando el loader..."
     cat <<EOT > /boot/loader/loader.conf
 default arch
 #timeout 3
@@ -197,7 +195,7 @@ EOT
 
 # Función para crear la entrada de i915 para Boot Splash
 function create_i915_entry() {
-    echo "Creando la entrada de i915 para Boot Splash..."
+    gum style --foreground 10 "Creando la entrada de i915 para Boot Splash..."
     tee /etc/modprobe.d/i915.conf > /dev/null <<EOF
 options i915 fastboot=1
 options i915 enable_guc=2
@@ -207,7 +205,7 @@ EOF
 
 # Función para crear la entrada de arranque predeterminada
 function create_default_boot_entry() {
-    echo "Creando la entrada de arranque predeterminada..."
+    gum style --foreground 10 "Creando la entrada de arranque predeterminada..."
     cat <<EOT > /boot/loader/entries/arch.conf
 title   Arch Linux
 linux   /vmlinuz-linux
@@ -219,7 +217,7 @@ EOT
 
 # Función para crear la entrada de arranque de fallback
 function create_fallback_boot_entry() {
-    echo "Creando la entrada de arranque de fallback..."
+    gum style --foreground 10 "Creando la entrada de arranque de fallback..."
     cat <<EOT > /boot/loader/entries/arch-fallback.conf
 title   Arch Linux (Fallback)
 linux   /vmlinuz-linux
@@ -280,27 +278,26 @@ function configure_sudoers() {
 
 # Función para habilitar el servicio SSH
 function enable_ssh() {
-    echo "Habilitando el servicio SSH..."
+    gum style --foreground 10 "Habilitando el servicio SSH..."
     systemctl enable sshd
 }
 
 # Función para actualizar los directorios de usuario
 function update_user_dirs() {
-    echo "Actualizando los directorios de usuario..."
+    gum style --foreground 10 "Actualizando los directorios de usuario..."
     pacman -S --noconfirm xdg-user-dirs
     sudo -u $username xdg-user-dirs-update
 }
 
 # Función para enmascarar el dispositivo TPM
 function mask_tpm_device() {
-    echo "Enmascarando el dispositivo TPM..."
+    gum style --foreground 10 "Enmascarando el dispositivo TPM..."
     systemctl mask dev-tpmrm0.device
 }
 
 # Función para configurar auto login en tty1
 function configure_auto_login() {
-    gum style --foreground 10 "¿Deseas configurar auto login en tty1?"
-    if gum confirm --affirmative "Sí" --negative "No"; then
+    if gum confirm "¿Deseas configurar auto login en tty1?" --affirmative "Sí" --negative "No"; then
         gum style --foreground 10 "Usuarios disponibles:"
         gum style --foreground 10 "1) root"
         gum style --foreground 10 "2) $username"
@@ -326,18 +323,18 @@ function configure_auto_login() {
 
 # Función para habilitar las cuotas de Btrfs
 function enable_btrfs_quotas() {
-    echo "Habilitando cuotas de Btrfs..."
+    gum style --foreground 10 "Habilitando cuotas de Btrfs..."
     btrfs quota enable /
     if [ $? -ne 0 ]; then
-        echo "Error: No se pudieron habilitar las cuotas de Btrfs."
+        gum style --foreground 9 "Error: No se pudieron habilitar las cuotas de Btrfs."
         exit 1
     fi
+    gum style --foreground 10 "Cuotas de Btrfs habilitadas correctamente."
 }
 
 # Función para instalar Timeshift y crear una copia de seguridad
 function install_timeshift() {
-    gum style --foreground 10 "¿Deseas crear una copia de seguridad con Timeshift ahora?"
-    if gum confirm --affirmative "Sí" --negative "No"; then
+    if gum confirm "¿Deseas crear una copia de seguridad con Timeshift ahora?" --affirmative "Sí" --negative "No"; then
         pacman -S --noconfirm timeshift
         enable_btrfs_quotas
         gum style --foreground 10 "Generando la primera copia de seguridad con Timeshift..."
@@ -347,19 +344,28 @@ function install_timeshift() {
 
 # Función para ejecutar scripts adicionales
 function run_additional_scripts() {
-    echo "Ejecutando scripts adicionales..."
+    gum style --foreground 10 "Ejecutando scripts adicionales..."
     chmod +x /tmp/ArchLinux_Install/src/modules/date_time_zone/main.sh
     chmod +x /tmp/ArchLinux_Install/src/modules/pacman_update/main.sh
+
+    gum style --foreground 10 "Ejecutando script de configuración de fecha, hora y zona horaria..."
     sudo -u $username /tmp/ArchLinux_Install/src/modules/date_time_zone/main.sh
+
+    gum style --foreground 10 "Ejecutando script de actualización de Pacman..."
     sudo -u $username /tmp/ArchLinux_Install/src/modules/pacman_update/main.sh
+
+    gum style --foreground 10 "Scripts adicionales ejecutados correctamente."
 }
 
 # Función principal
 function main() {
+    gum style --foreground 10 "Iniciando el proceso de configuración del sistema..."
+
     set_hostname
     ask_root_password
     ask_for_user_creation
 
+    gum style --foreground 10 "Configurando el sistema..."
     configure_hostname
     configure_hosts_file
     install_network_manager
@@ -380,12 +386,14 @@ function main() {
     mask_tpm_device
     configure_auto_login
 
-    # Ejecutar los scripts adicionales antes de timeshift
+    gum style --foreground 10 "Ejecutando scripts adicionales..."
     run_additional_scripts
 
+    gum style --foreground 10 "Instalando y configurando Timeshift..."
     install_timeshift
-    
-    echo "Saliendo del chroot..."
+
+    gum style --foreground 10 "Saliendo del chroot..."
+    echo "Configuración completada."
 }
 
 # Ejecutar la función principal
