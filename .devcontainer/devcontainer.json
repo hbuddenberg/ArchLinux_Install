@@ -1,15 +1,42 @@
 {
-  "name": "Arch Linux Development Container",
+  "name": "Arch Linux Dev Container",
   "build": {
     "dockerfile": "Dockerfile"
   },
+  "containerEnv": {
+    "SHELL": "/bin/zsh",
+    "GH_TOKEN": "${localEnv:GH_TOKEN}"
+  },
+  "postDestroyCommand": "docker rmi archlinuxinstall:latest || true",
+  "alwaysInitialize": true,
+  "runArgs": [
+    "--hostname", "archlinux-dev"
+  ],
+  "mounts": [
+    "source=${localEnv:HOME}/.config/opencode,target=/root/.config/opencode,type=bind,consistency=cached",
+    "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached"
+  ], 
   "customizations": {
     "vscode": {
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "zsh"
+      },
       "extensions": [
         "ms-vscode.cpptools",
-        "ms-python.python"
+        "ms-python.python",
+        "eamodio.gitlens",
+        "sst-dev.opencode",
+        "islee23520.opencode-sidebar-tui",
+        "foxundermoon.shell-format",
+        "cubix.gumlights",
+        "mads-hartmann.bash-ide-vscode",
+        "mkhl.shfmt",
+        "naumovs.color-highlight",
+        "circlecodesolution.ccs-flutter-color"
+
       ]
     }
   },
-  "remoteUser": "root"
-}
+  "remoteUser": "root",
+  "workspaceFolder": "/workspace"
+} 
