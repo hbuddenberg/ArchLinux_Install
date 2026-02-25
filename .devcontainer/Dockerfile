@@ -44,7 +44,7 @@ CMD ["/usr/lib/systemd/systemd"]
 
 # As de desarrollo, instalar herramientas adicionales
 RUN pacman -Syu --noconfirm opencode wl-clipboard xclip
-RUN pacman -Syu --noconfirm uv python python-pip python-virtualenv github-cli gum
+RUN pacman -Syu --noconfirm uv python python-pip python-virtualenv github-cli gum npm
 
 # CONFIGURAR HOSTNAME PERSONALIZADO
 RUN echo "archlinux-dev" > /etc/hostname
