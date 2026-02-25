@@ -9,7 +9,7 @@ from archinstall_tui.tui.widgets.logo import ArchLogo
 
 class MainMenuScreen(Screen):
     BINDINGS = [
-        ("q", "quit", "Quit"),
+        ("q", "request_exit", "Salir"),
         ("up", "focus_previous", "Up"),
         ("down", "focus_next", "Down"),
     ]
@@ -43,3 +43,7 @@ class MainMenuScreen(Screen):
             self.app.push_module("utilities")
         elif btn_id == "btn-exit":
             self.app.request_exit()
+
+    def action_request_exit(self) -> None:
+        """Mostrar pantalla de confirmación de salida."""
+        self.app.request_exit()

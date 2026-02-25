@@ -19,7 +19,6 @@ class ArchInstallApp(App):
         "exit": ExitScreen,
     }
     BINDINGS = [
-        ("q", "quit", "Quit"),
         ("escape", "go_back", "Back"),
     ]
 

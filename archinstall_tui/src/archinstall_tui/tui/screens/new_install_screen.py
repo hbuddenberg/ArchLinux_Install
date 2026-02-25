@@ -10,7 +10,7 @@ class NewInstallScreen(Screen):
     """Pantalla de opciones de nueva instalación."""
 
     BINDINGS = [
-        ("q", "quit", "Quit"),
+        ("q", "request_exit", "Salir"),
         ("escape", "go_back", "Back"),
         ("up", "focus_previous", "Up"),
         ("down", "focus_next", "Down"),
@@ -73,3 +73,7 @@ class NewInstallScreen(Screen):
 
     def action_go_back(self) -> None:
         self.app.pop_screen()
+
+    def action_request_exit(self) -> None:
+        """Mostrar pantalla de confirmación de salida."""
+        self.app.request_exit()

@@ -27,9 +27,19 @@ def test_app_bindings_configured():
     from archinstall_tui.tui.app import ArchInstallApp
 
     bindings = [b[0] for b in ArchInstallApp.BINDINGS]
-    assert "q" in bindings
+    # 'q' is handled by individual screens, not globally
     assert "escape" in bindings
 
+
+def test_screen_bindings_have_exit_action():
+    from archinstall_tui.tui.screens.main_menu import MainMenuScreen
+    from archinstall_tui.tui.screens.new_install_screen import NewInstallScreen
+    from archinstall_tui.tui.screens.utilities_screen import UtilitiesScreen
+
+    # All menu screens should have 'q' bound to request_exit
+    for screen_class in [MainMenuScreen, NewInstallScreen, UtilitiesScreen]:
+        bindings = [b[0] for b in screen_class.BINDINGS]
+        assert "q" in bindings
 
 def test_app_push_module():
     from archinstall_tui.tui.app import ArchInstallApp
