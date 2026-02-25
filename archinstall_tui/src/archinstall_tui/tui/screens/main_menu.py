@@ -1,7 +1,7 @@
 from textual.app import ComposeResult
 from textual.containers import Center, Vertical
 from textual.screen import Screen
-from textual.widgets import Button, Footer, Header, Static
+from textual.widgets import Button, Footer, Static
 
 from archinstall_tui.core.i18n import t
 from archinstall_tui.tui.widgets.logo import ArchLogo
@@ -17,8 +17,6 @@ class MainMenuScreen(Screen):
     CSS_PATH = "../styles.tcss"
 
     def compose(self) -> ComposeResult:
-        yield Header()
-
         with Center(), Vertical(id="menu-container"):
             yield ArchLogo()
             yield Static(t("menu.select"), id="menu-prompt")
@@ -27,9 +25,7 @@ class MainMenuScreen(Screen):
                 yield Button(
                     t("menu.new_install"), id="btn-new-install", variant="primary"
                 )
-                yield Button(
-                    t("menu.utilities"), id="btn-utilities", variant="default"
-                )
+                yield Button(t("menu.utilities"), id="btn-utilities", variant="default")
                 yield Button(t("menu.exit"), id="btn-exit", variant="warning")
 
         yield Footer()

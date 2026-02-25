@@ -6,6 +6,8 @@ from archinstall_tui.tui.screens.main_menu import MainMenuScreen
 from archinstall_tui.tui.screens.new_install_screen import NewInstallScreen
 from archinstall_tui.tui.screens.utilities_screen import UtilitiesScreen
 from archinstall_tui.tui.screens.exit_screen import ExitScreen
+from archinstall_tui.tui.screens.theme_screen import ThemeScreen
+from archinstall_tui.tui.screens.language_screen import LanguageScreen
 from archinstall_tui.modules.new_install.module import NewInstallModule
 from archinstall_tui.modules.utilities.module import UtilitiesModule
 
@@ -17,9 +19,13 @@ class ArchInstallApp(App):
         "new_install": NewInstallScreen,
         "utilities": UtilitiesScreen,
         "exit": ExitScreen,
+        "theme": ThemeScreen,
+        "language": LanguageScreen,
     }
     BINDINGS = [
         ("escape", "go_back", "Back"),
+        ("p", "theme", "Theme"),
+        ("e", "language", "Language"),
     ]
 
     def __init__(self, lang: str | None = None):
@@ -59,6 +65,28 @@ class ArchInstallApp(App):
         """Show exit confirmation screen."""
         self.push_screen("exit")
 
+    def set_theme(self, theme_name: str) -> None:
+        """Change the application theme."""
+        self.theme = theme_name
+        self.notify(f"Theme: {theme_name}", title="Theme", severity="information")
+
+    def set_language(self, lang: str) -> None:
+        """Change the application language."""
+        from archinstall_tui.core.config import get_config
+
+        config = get_config()
+        config.lang = lang
+        self._lang = lang
+        self.notify(f"Language: {lang}", title="Language", severity="information")
+
     def action_go_back(self) -> None:
         if len(self.screen_stack) > 1:
             self.pop_screen()
+
+    def action_theme(self) -> None:
+        """Show theme selection dialog."""
+        self.push_screen("theme")
+
+    def action_language(self) -> None:
+        """Show language selection dialog."""
+        self.push_screen("language")

@@ -1,7 +1,7 @@
 from textual.app import ComposeResult
 from textual.containers import Center, Vertical
 from textual.screen import Screen
-from textual.widgets import Button, Footer, Header, Static
+from textual.widgets import Button, Footer, Static
 
 from archinstall_tui.core.i18n import t
 
@@ -19,8 +19,6 @@ class UtilitiesScreen(Screen):
     CSS_PATH = "../styles.tcss"
 
     def compose(self) -> ComposeResult:
-        yield Header()
-
         with Center(), Vertical(id="menu-container"):
             yield Static(t("utilities.title"), id="menu-prompt")
 

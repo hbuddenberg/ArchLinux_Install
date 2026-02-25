@@ -24,6 +24,10 @@ STRINGS: dict[str, dict[str, str]] = {
         "exit.no": "No",
         "error.generic": "Ha ocurrido un error",
         "success.saved": "Guardado correctamente",
+        "theme.title": "Seleccionar Tema",
+        "language.title": "Seleccionar Idioma",
+        "language.es": "Español",
+        "language.en": "Inglés",
     },
     "en": {
         "app.title": "ArchLinux Install TUI",
@@ -49,6 +53,10 @@ STRINGS: dict[str, dict[str, str]] = {
         "exit.no": "No",
         "error.generic": "An error has occurred",
         "success.saved": "Saved successfully",
+        "theme.title": "Select Theme",
+        "language.title": "Select Language",
+        "language.es": "Spanish",
+        "language.en": "English",
     },
 }
 

@@ -1,7 +1,7 @@
 from textual.app import ComposeResult
 from textual.containers import Center, Vertical
 from textual.screen import Screen
-from textual.widgets import Button, Footer, Header, Static
+from textual.widgets import Button, Footer, Static
 
 from archinstall_tui.core.i18n import t
 
@@ -19,12 +19,13 @@ class NewInstallScreen(Screen):
     CSS_PATH = "../styles.tcss"
 
     def compose(self) -> ComposeResult:
-        yield Header()
-
         with Center(), Vertical(id="menu-container"):
             yield Static(t("new_install.title"), id="menu-prompt")
 
             with Vertical(id="menu-buttons"):
+                yield Button(
+                    t("new_install.wizard"), id="btn-wizard", variant="primary"
+                )
                 yield Button(
                     t("new_install.datetime"), id="btn-datetime", variant="default"
                 )
@@ -44,9 +45,6 @@ class NewInstallScreen(Screen):
                     t("new_install.post_install"),
                     id="btn-post-install",
                     variant="default",
-                )
-                yield Button(
-                    t("new_install.wizard"), id="btn-wizard", variant="primary"
                 )
                 yield Button(t("menu.exit"), id="btn-back", variant="warning")
 
