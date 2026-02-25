@@ -10,7 +10,7 @@ class ExitScreen(Screen):
     """Pantalla de confirmación de salida."""
 
     BINDINGS = [
-        ("q", "quit", "Quit"),
+        ("q", "quit_app", "Quit"),
         ("escape", "go_back", "Back"),
     ]
 
@@ -32,9 +32,13 @@ class ExitScreen(Screen):
         btn_id = event.button.id
 
         if btn_id == "btn-exit-yes":
-            self.app.action_quit()
+            self.app.exit()
         elif btn_id == "btn-exit-no":
             self.app.pop_screen()
 
     def action_go_back(self) -> None:
         self.app.pop_screen()
+
+    def action_quit_app(self) -> None:
+        """Cerrar la aplicación."""
+        self.app.exit()
