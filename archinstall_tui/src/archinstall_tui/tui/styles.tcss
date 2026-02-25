@@ -1,0 +1,53 @@
+Screen {
+    align: center middle;
+    overflow: hidden hidden;
+}
+
+#menu-container {
+    width: 80;
+    height: auto;
+    align: center middle;
+    padding: 0;
+}
+
+
+#menu-prompt {
+    text-align: center;
+    margin-top: 1;
+    margin-bottom: 1;
+    color: $text-muted;
+}
+
+#menu-buttons {
+    width: 100%;
+    height: auto;
+    align: center middle;
+    margin-top: 1;
+}
+
+#menu-buttons Button {
+    width: 26;
+    margin: 1 4;
+}
+
+Button:focus {
+    text-style: bold;
+}
+
+Header {
+    dock: top;
+}
+
+Footer {
+    dock: bottom;
+}
+
+ArchLogo {
+    width: 80;
+    padding: 1 0;
+    margin-bottom: 1;
+    text-align: left;
+}
+.logo-loaded {
+    text-style: bold;
+}
