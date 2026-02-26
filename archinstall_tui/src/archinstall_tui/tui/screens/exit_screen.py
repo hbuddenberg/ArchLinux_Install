@@ -1,7 +1,7 @@
 from textual.app import ComposeResult
 from textual.containers import Center, Vertical
 from textual.screen import Screen
-from textual.widgets import Button, Footer, Static
+from textual.widgets import Button, Static
 
 from archinstall_tui.core.i18n import t
 
@@ -24,7 +24,8 @@ class ExitScreen(Screen):
                 yield Button(t("exit.yes"), id="btn-exit-yes", variant="error")
                 yield Button(t("exit.no"), id="btn-exit-no", variant="primary")
 
-        yield Footer()
+        from archinstall_tui.tui.widgets.custom_footer import CustomFooter
+        yield CustomFooter()
 
     def on_button_pressed(self, event: Button.Pressed) -> None:
         btn_id = event.button.id

@@ -1,5 +1,4 @@
-
-from textual.app import App
+from textual.app import App, ComposeResult
 
 from archinstall_tui.core.i18n import t
 from archinstall_tui.tui.screens.main_menu import MainMenuScreen
@@ -24,8 +23,8 @@ class ArchInstallApp(App):
     }
     BINDINGS = [
         ("escape", "go_back", "Back"),
-        ("p", "theme", "Theme"),
-        ("e", "language", "Language"),
+        ("ctrl+t", "theme", "Theme"),
+        ("ctrl+l", "language", "Language"),
     ]
 
     def __init__(self, lang: str | None = None):
@@ -37,6 +36,8 @@ class ArchInstallApp(App):
         }
 
     def on_mount(self) -> None:
+        """Initialize the app."""
+        # Set the title and push main screen
         self.title = t("app.title", self._lang)
         self.push_screen("main")
 
@@ -57,7 +58,9 @@ class ArchInstallApp(App):
         result = module.run(subcommand=subcommand)
 
         if result.success:
-            self.notify(result.message, title="Success", severity="information", timeout=5)
+            self.notify(
+                result.message, title="Success", severity="information", timeout=5
+            )
         else:
             self.notify(result.message, title="Error", severity="error", timeout=10)
 

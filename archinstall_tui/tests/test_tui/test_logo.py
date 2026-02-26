@@ -9,8 +9,8 @@ def test_logo_widget_initialization():
 
     logo = ArchLogo()
     assert "assets" in str(logo.logo_path)  # Default uses bundled asset
-    assert logo.logo_path.name == "logo.txt"
-
+    # The logo_path could be .png, .svg, or .txt depending on what exists
+    assert logo.logo_path.name in ["logo.png", "logo.svg", "logo.txt"]
 
 def test_logo_widget_custom_path():
 
@@ -65,6 +65,8 @@ def test_logo_applies_rich_markup_colors(tmp_path):
     logo_file.write_text("ARCH")
     logo = ArchLogo(logo_path=logo_file)
     content = logo._load_logo()
-    assert "[cyan]" in content
-    assert "[/cyan]" in content
+    # Verificar que todo el logo usa el color azul de Arch Linux (#1793D1)
+    assert "[#1793D1]" in content
+    assert "[/#1793D1]" in content
+    assert "ARCH" in content
     assert "ARCH" in content

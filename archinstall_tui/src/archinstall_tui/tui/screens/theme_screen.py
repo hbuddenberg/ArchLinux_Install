@@ -1,7 +1,7 @@
 from textual.app import ComposeResult
 from textual.containers import Center, Vertical
 from textual.screen import Screen
-from textual.widgets import Button, Footer, Static
+from textual.widgets import Button, Static
 
 from archinstall_tui.core.i18n import t
 
@@ -20,6 +20,8 @@ class ThemeScreen(Screen):
             yield Static(t("theme.title"), id="menu-prompt")
 
             with Vertical(id="menu-buttons"):
+                # Arch Linux theme (default)
+                yield Button("Arch", id="btn-theme-arch", variant="primary")
                 yield Button(
                     "textual-dark", id="btn-theme-textual-dark", variant="default"
                 )
@@ -47,7 +49,8 @@ class ThemeScreen(Screen):
                 )
                 yield Button(t("menu.exit"), id="btn-back", variant="warning")
 
-        yield Footer()
+        from archinstall_tui.tui.widgets.custom_footer import CustomFooter
+        yield CustomFooter()
 
     def on_button_pressed(self, event: Button.Pressed) -> None:
         btn_id = event.button.id

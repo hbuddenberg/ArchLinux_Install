@@ -10,7 +10,6 @@ Screen {
     padding: 0;
 }
 
-
 #menu-prompt {
     text-align: center;
     margin-top: 1;
@@ -25,15 +24,82 @@ Screen {
     margin-top: 1;
 }
 
+/* Botones base */
+Button {
+    background: $panel;
+    color: $text;
+    border: solid $panel;
+    padding: 1;
+    margin: 1 2;
+    min-width: 20;
+}
+
+/* Hover - indicación suave (mouse) */
+Button:hover {
+    background: rgb(60, 60, 60);
+}
+
+/* Focus - selección real (teclado) - Arch Linux Blue #1793D1 */
+Button:focus {
+    text-style: bold;
+    background: rgb(23, 147, 209);
+    border: thick rgb(23, 147, 209);
+    color: black;
+}
+
+/* Botones en el menú */
 #menu-buttons Button {
     width: 26;
     margin: 1 4;
+    padding: 1;
+    border: solid $panel;
+    background: $panel;
+    color: $text;
 }
 
-Button:focus {
-    text-style: bold;
+/* Variantes de botones */
+Button.primary {
+    background: $primary;
+    color: $text;
 }
 
+Button.primary:focus {
+    background: rgb(23, 147, 209) !important;
+    border: thick rgb(23, 147, 209) !important;
+    color: black !important;
+}
+
+Button.warning {
+    background: $warning;
+    color: $text;
+}
+
+Button.warning:focus {
+    background: rgb(23, 147, 209) !important;
+    border: thick rgb(23, 147, 209) !important;
+}
+
+Button.error {
+    background: $error;
+    color: $text;
+}
+
+Button.error:focus {
+    background: rgb(23, 147, 209) !important;
+    border: thick rgb(23, 147, 209) !important;
+}
+
+/* Botón default también necesita focus style */
+Button.default {
+    background: $panel;
+    color: $text;
+}
+
+Button.default:focus {
+    background: rgb(23, 147, 209) !important;
+    border: thick rgb(23, 147, 209) !important;
+    color: black !important;
+}
 Header {
     dock: top;
 }
@@ -48,6 +114,7 @@ ArchLogo {
     margin-bottom: 1;
     text-align: left;
 }
+
 .logo-loaded {
     text-style: bold;
 }
