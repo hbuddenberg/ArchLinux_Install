@@ -325,13 +325,15 @@ function enable_btrfs_quotas() {
     gum style --foreground 10 "Cuotas de Btrfs habilitadas correctamente."
 }
 
-# Función para instalar Timeshift y crear una copia de seguridad
-function install_timeshift() {
-    if gum confirm "¿Deseas crear una copia de seguridad con Timeshift ahora?" --affirmative "Sí" --negative "No"; then
-        pacman -S --noconfirm timeshift
+# Función para instalar Snapper y crear una copia de seguridad
+function install_snapper() {
+    if gum confirm "¿Deseas crear una copia de seguridad con Snapper ahora?" --affirmative "Sí" --negative "No"; then
+        pacman -S --noconfirm snapper
         enable_btrfs_quotas
-        gum style --foreground 10 "Generando la primera copia de seguridad con Timeshift..."
-        timeshift --create --comments "Primera copia de seguridad" --tags D
+        gum style --foreground 10 "Generando la primera copia de seguridad con Snapper..."
+        snapper -c home create --description "Primera copia de seguridad"
+        snapper -c root create --description "Primera copia de seguridad"
+        snapper create --description "Primera copia de seguridad"
     fi
 }
 
@@ -382,8 +384,8 @@ function main() {
     gum style --foreground 10 "Ejecutando scripts adicionales..."
     run_additional_scripts
 
-    gum style --foreground 10 "Instalando y configurando Timeshift..."
-    install_timeshift
+    gum style --foreground 10 "Instalando y configurando Snapper..."
+    install_snapper
 
     gum style --foreground 10 "Saliendo del chroot..."
     echo "Configuración completada."
